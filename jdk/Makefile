@@ -19,7 +19,7 @@ prepare:
 	@unix2dos compile.bat $(SOURCES) 2> /dev/null
 
 revert:
-	svn revert Manifest.mf
+	git checkout -- Manifest.mf
 	
 addversion: revert
 	if [ -z "`grep SIVERSION ${MANIFEST}`" ]; \

@@ -26,8 +26,8 @@ dll:
 	
 revert:
 	# Revert files which have been changed.
-	svn revert -q com/gurock/smartinspect/SmartInspect.java
-	svn revert -q ${MANIFEST}
+	git checkout -- com/gurock/smartinspect/SmartInspect.java
+	git checkout -- ${MANIFEST}
 
 addversion: revert
 	# Checking SmartInspect Version

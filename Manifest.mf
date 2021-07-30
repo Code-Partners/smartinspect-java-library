@@ -1,6 +1,6 @@
-Manifest-Version: $SIVERSION 
+Manifest-Version: 3.3.9.181 
 Implementation-Title: "SmartInspect Java Library"
-Implementation-Version: "$SIVERSION"
+Implementation-Version: "3.3.9.181"
 Implementation-Vendor: "Gurock Software GmbH"
 Implementation-Vendor-Id: "com.gurock"
 Implementation-URL: "http://www.gurock.com/products/smartinspect/"

@@ -10,10 +10,10 @@ DLL      = native/SmartInspect.Java.dll
 SLN      = native/SmartInspect.Java.sln
 
 # Force the correct version (1.4.2)
-JAR      = "/cygdrive/c/Program Files/JavaSDK14/bin/jar.exe"
-JAVAC    = "/cygdrive/c/Program Files/JavaSDK14/bin/javac.exe"
+JAR      = "/cygdrive/c/j2sdk1.4.2_19/bin/jar.exe"
+JAVAC    = "/cygdrive/c/j2sdk1.4.2_19/bin/javac.exe"
 
-all: addversion prepare build clean dll adapters
+all: addversion prepare build clean adapters
 
 prepare:
 	# Ensure clrf characters.

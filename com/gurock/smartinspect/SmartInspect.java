@@ -65,7 +65,7 @@ import java.util.Set;
 
 public class SmartInspect
 {
-	private static final String VERSION = "$SIVERSION";
+	private static final String VERSION = "3.3.9.181";
 	
 	private static final String CAPTION_NOT_FOUND =
 		"No protocol could be found with the specified caption";	

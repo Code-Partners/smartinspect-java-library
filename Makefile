@@ -1,10 +1,10 @@
 LIBRARY  = com/gurock/smartinspect
 SOURCES  = $(wildcard $(LIBRARY)/*.java)
-VERSION  = $(shell cat ../../../version)
+VERSION  = $(shell cat ../../smartinspect-core/version)
 
 MANIFEST = Manifest.mf
 DIST     = dist
-OUTPUT   = ../../../dist/bin/java
+OUTPUT   = ../../smartinspect-core/dist/bin/java
 PACKAGE  = SmartInspect.jar
 DLL      = native/SmartInspect.Java.dll
 SLN      = native/SmartInspect.Java.sln

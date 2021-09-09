@@ -1,5 +1,5 @@
 //
-// <!-- Copyright (C) Gurock Software GmbH. All rights reserved. -->
+// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
 //
 
 package com.gurock.smartinspect;

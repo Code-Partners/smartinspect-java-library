@@ -4,7 +4,7 @@ VERSION  = $(shell cat ../../../../version)
 
 MANIFEST = Manifest.mf
 DIST     = dist
-OUTPUT   = ../../../../dist/bin/java
+OUTPUT   = ../../../smartinspect-core/dist/bin/java
 PACKAGE  = SmartInspect.JDK.jar
 DEP      = $(OUTPUT)/SmartInspect.jar
 

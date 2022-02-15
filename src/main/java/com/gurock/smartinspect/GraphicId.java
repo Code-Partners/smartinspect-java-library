@@ -57,7 +57,7 @@ public final class GraphicId extends Enum
 	//   The related viewer ID.
 	// </returns>
 
-	protected ViewerId toViewerId()
+	public ViewerId toViewerId()
 	{
 		return this.fVi;
 	}

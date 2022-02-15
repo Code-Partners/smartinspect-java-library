@@ -4,6 +4,23 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.connections.ConnectionsParser;
+import com.gurock.smartinspect.connections.ConnectionsParserEvent;
+import com.gurock.smartinspect.connections.ConnectionsParserListener;
+import com.gurock.smartinspect.packets.Packet;
+import com.gurock.smartinspect.packets.controlcommand.ControlCommand;
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlow;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.Watch;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+import com.gurock.smartinspect.protocols.*;
+import com.gurock.smartinspect.session.Session;
+import com.gurock.smartinspect.session.SessionDefaults;
+import com.gurock.smartinspect.session.SessionManager;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -647,10 +664,10 @@ public class SmartInspect
 		try
 		{
 			ConnectionsParser parser = new ConnectionsParser();
-			ConnectionsParserListener listener = 
+			ConnectionsParserListener listener =
 				new ConnectionsParserListener()
 				{
-					public void onProtocol(ConnectionsParserEvent e) 
+					public void onProtocol(ConnectionsParserEvent e)
 						throws SmartInspectException
 					{
 						addConnection(e.getProtocol(), e.getOptions());
@@ -1258,8 +1275,8 @@ public class SmartInspect
 	//   An optional object which encapsulates additional protocol
 	//   specific information about the custom action. Can be null.
 	// </param>
-	// <seealso cref="com.gurock.smartinspect.Protocol.dispatch"/>
-	// <seealso cref="com.gurock.smartinspect.Protocol.isValidOption"/>
+	// <seealso cref="com.gurock.smartinspect.protocols.Protocol.dispatch"/>
+	// <seealso cref="com.gurock.smartinspect.protocols.Protocol.isValidOption"/>
 	// <remarks>
 	//   This method dispatches the action and state parameters to the
 	//   connection identified by the caption argument. If no suitable
@@ -1674,7 +1691,7 @@ public class SmartInspect
 	//   to the getSession method to lookup the supplied session. 
 	// </remarks>
 	
-	protected void updateSession(Session session, String to, String from)
+	public void updateSession(Session session, String to, String from)
 	{
 		this.fSessions.update(session, to, from);
 	}
@@ -1828,7 +1845,7 @@ public class SmartInspect
 			if (!this.fListeners.isEmpty())
 			{
 				Iterator it = this.fListeners.iterator();
-				ControlCommandEvent e = new ControlCommandEvent(this, 
+				ControlCommandEvent e = new ControlCommandEvent(this,
 					controlCommand);
 
 				while (it.hasNext())

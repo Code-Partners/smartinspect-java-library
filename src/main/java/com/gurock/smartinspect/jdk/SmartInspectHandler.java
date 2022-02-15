@@ -5,9 +5,9 @@
 package com.gurock.smartinspect.jdk;
 
 import com.gurock.smartinspect.ErrorEvent;
-import com.gurock.smartinspect.Session;
 import com.gurock.smartinspect.SiAuto;
 import com.gurock.smartinspect.SmartInspectAdapter;
+import com.gurock.smartinspect.session.Session;
 
 import java.util.logging.*;
 
@@ -264,7 +264,7 @@ public final class SmartInspectHandler extends java.util.logging.Handler
 	//
 	//   In contrast, if the message of the record does not start with the
 	//   "ENTRY" or "RETURN" tokens, this method sends a simple message.
-	//   The <link com.gurock.smartinspect.LogEntryType, log entry type>
+	//   The <link com.gurock.smartinspect.logentry.LogEntryType, log entry type>
 	//   of the message here depends on the level of the supplied record.
 	//   The following table lists the conversion method:
 	//   

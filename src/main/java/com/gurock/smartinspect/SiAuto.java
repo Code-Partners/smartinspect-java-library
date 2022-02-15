@@ -51,6 +51,8 @@ package com.gurock.smartinspect;
 // </code>
 // </example>
 
+import com.gurock.smartinspect.session.Session;
+
 public final class SiAuto
 {
 	private static final String APPNAME = "Auto"; 

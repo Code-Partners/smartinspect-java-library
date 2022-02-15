@@ -14,7 +14,12 @@ package com.gurock.smartinspect;
 //   in this interface for details and examples.
 // </remarks>
 
-public interface SmartInspectListener 
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+
+public interface SmartInspectListener
 {
 	// <summary>
 	//   This event is fired after an error occurred.
@@ -80,8 +85,8 @@ public interface SmartInspectListener
 	//   Occurs when a ControlCommand packet is processed.
 	// </summary>
 	// <param name="e">The event argument for the event handlers.</param>
-	// <seealso cref="com.gurock.smartinspect.ControlCommand"/>
-	// <seealso cref="com.gurock.smartinspect.ControlCommandEvent"/>
+	// <seealso cref="com.gurock.smartinspect.packets.controlcommand.ControlCommand"/>
+	// <seealso cref="com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent"/>
 	// <remarks>
 	//   You can use this event if custom processing of ControlCommand
 	//   packets is needed. The event handlers are always called in the
@@ -126,8 +131,8 @@ public interface SmartInspectListener
 	//   Occurs when a LogEntry packet is processed.
 	// </summary>
 	// <param name="e">The event argument for the event handlers.</param>
-	// <seealso cref="com.gurock.smartinspect.LogEntry"/>
-	// <seealso cref="com.gurock.smartinspect.LogEntryEvent"/>
+	// <seealso cref="com.gurock.smartinspect.logentry.LogEntry"/>
+	// <seealso cref="com.gurock.smartinspect.logentry.LogEntryEvent"/>
 	// <remarks>
 	//   You can use this event if custom processing of LogEntry packets
 	//   is needed. The event handlers are always called in the context
@@ -172,8 +177,8 @@ public interface SmartInspectListener
 	//   Occurs when a ProcessFlow packet is processed.
 	// </summary>
 	// <param name="e">The event argument for the event handlers.</param>
-	// <seealso cref="com.gurock.smartinspect.ProcessFlow"/>
-	// <seealso cref="com.gurock.smartinspect.ProcessFlowEvent"/>
+	// <seealso cref="com.gurock.smartinspect.packets.processflow.ProcessFlow"/>
+	// <seealso cref="com.gurock.smartinspect.packets.processflow.ProcessFlowEvent"/>
 	// <remarks>
 	//   You can use this event if custom processing of ProcessFlow
 	//   packets is needed. The event handlers are always called in the
@@ -218,8 +223,8 @@ public interface SmartInspectListener
 	//   Occurs when a Watch packet is processed.
 	// </summary>
 	// <param name="e">The event argument for the event handlers.</param>
-	// <seealso cref="com.gurock.smartinspect.Watch"/>
-	// <seealso cref="com.gurock.smartinspect.WatchEvent"/>
+	// <seealso cref="com.gurock.smartinspect.packets.watch.Watch"/>
+	// <seealso cref="com.gurock.smartinspect.packets.watch.WatchEvent"/>
 	// <remarks>
 	//   You can use this event if custom processing of Watch packets
 	//   is needed. The event handlers are always called in the context
@@ -265,7 +270,7 @@ public interface SmartInspectListener
 	//   filter out packets.
 	// </summary>
 	// <param name="e">The event argument for the event handlers.</param>
-	// <seealso cref="com.gurock.smartinspect.Packet"/>
+	// <seealso cref="com.gurock.smartinspect.packets.Packet"/>
 	// <seealso cref="com.gurock.smartinspect.FilterEvent"/>
 	// <remarks>
 	//   This event can be used if filtering of certain packets is

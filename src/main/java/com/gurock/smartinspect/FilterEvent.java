@@ -22,6 +22,8 @@ package com.gurock.smartinspect;
 //   This class is fully threadsafe.
 // </threadsafety>
 
+import com.gurock.smartinspect.packets.Packet;
+
 public class FilterEvent extends java.util.EventObject
 {
 	private Packet fPacket;

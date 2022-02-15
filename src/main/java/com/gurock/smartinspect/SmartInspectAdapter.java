@@ -18,7 +18,12 @@ package com.gurock.smartinspect;
 //   default implementation of this class.
 // </remarks>
 
-public class SmartInspectAdapter implements SmartInspectListener 
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+
+public class SmartInspectAdapter implements SmartInspectListener
 {
 	// <summary>
 	//   Provides an empty default implementation for the error event of
@@ -50,7 +55,7 @@ public class SmartInspectAdapter implements SmartInspectListener
 	//   documentation of the SmartInspectListener.onControlCommand method.
 	// </remarks>
 	
-	public void onControlCommand(ControlCommandEvent e) 
+	public void onControlCommand(ControlCommandEvent e)
 	{
 		
 	}
@@ -68,7 +73,7 @@ public class SmartInspectAdapter implements SmartInspectListener
 	//   SmartInspectListener.onLogEntry method.
 	// </remarks>
 	
-	public void onLogEntry(LogEntryEvent e) 
+	public void onLogEntry(LogEntryEvent e)
 	{
 		
 	}
@@ -86,7 +91,7 @@ public class SmartInspectAdapter implements SmartInspectListener
 	//   documentation of the SmartInspectListener.onLogEntry method.
 	// </remarks>
 	
-	public void onProcessFlow(ProcessFlowEvent e) 
+	public void onProcessFlow(ProcessFlowEvent e)
 	{
 		
 	}
@@ -104,7 +109,7 @@ public class SmartInspectAdapter implements SmartInspectListener
 	//   SmartInspectListener.onWatch method.
 	// </remarks>
 	
-	public void onWatch(WatchEvent e) 
+	public void onWatch(WatchEvent e)
 	{
 		
 	}

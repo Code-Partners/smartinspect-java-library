@@ -13,7 +13,7 @@ package com.gurock.smartinspect;
 //   This class is fully threadsafe.
 // </threadsafety>
 
-abstract class Enum
+public abstract class Enum
 {
 	private int fValue;
 	private String fName;

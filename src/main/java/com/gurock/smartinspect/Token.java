@@ -18,6 +18,8 @@ package com.gurock.smartinspect;
 //   This class is not guaranteed to be threadsafe.
 // </threadsafety>
 
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+
 public abstract class Token
 {
 	private String fValue;

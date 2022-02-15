@@ -21,7 +21,7 @@ import java.util.Map;
 //   The public static members of this class are threadsafe.
 // </threadsafety>
 
-final class ObjectRenderer 
+public final class ObjectRenderer
 {
 	private ObjectRenderer()
 	{

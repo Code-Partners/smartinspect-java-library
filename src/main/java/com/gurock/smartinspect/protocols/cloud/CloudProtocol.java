@@ -57,6 +57,9 @@ public class CloudProtocol extends TcpProtocol {
     private static int MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 10 * 1024 * 1024;
     private static int DEFAULT_VIRTUAL_FILE_MAX_SIZE = 100 * 1024 * 1024;
 
+    private static int MAX_ALLOWED_CUSTOM_LABEL_COUNT = 5;
+    private static int MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH = 100;
+
     private FileRotater fRotater;
     private FileRotate fRotate;
 
@@ -140,10 +143,28 @@ public class CloudProtocol extends TcpProtocol {
     }
 
     private void parseCustomLabelsOption(String option) {
+        // due to protocols class hierarchy design flaws, this function can be called
+        // even before class fields are initialized
+        if (customLabels == null) {
+            return;
+        }
+
         for(String keyValue : option.split(" *; *")) {
             String[] pairs = keyValue.split(" *= *", 2);
             if (pairs.length == 2) {
-                customLabels.put(pairs[0], pairs[1]);
+                String name = pairs[0];
+                String value = pairs[1];
+
+                if (
+                        (name.length() <= MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
+                        && (value.length() <= MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
+                ) {
+                    customLabels.put(name, value);
+                }
+            }
+
+            if (customLabels.size() == MAX_ALLOWED_CUSTOM_LABEL_COUNT) {
+                break;
             }
         }
     }

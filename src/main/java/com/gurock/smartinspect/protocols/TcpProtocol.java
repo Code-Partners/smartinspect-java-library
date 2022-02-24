@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 // <summary>
@@ -53,9 +54,9 @@ public class TcpProtocol extends Protocol
 	protected Formatter fFormatter;
 	private byte[] fAnswer;
 
-	private String fHostName = "127.0.0.1";
-	private int fTimeout = 30000;
-	private int fPort = 4228;
+	protected String fHostName = "127.0.0.1";
+	protected int fTimeout = 30000;
+	protected int fPort = 4228;
 
 	// <summary>
 	//   Creates and initializes a TcpProtocol instance. For a list of
@@ -204,14 +205,7 @@ public class TcpProtocol extends Protocol
 
 	protected void internalConnect() throws Exception
 	{
-		this.fSocket = new Socket();
-		this.fSocket.setTcpNoDelay(true);
-		this.fSocket.setSoTimeout(this.fTimeout);
-
-		this.fSocket.connect(
-			new InetSocketAddress(this.fHostName, this.fPort),
-			this.fTimeout
-		);
+		this.fSocket = internalInitializeSocket();
 
 		if (this.fSocket.isConnected())
 		{
@@ -225,6 +219,19 @@ public class TcpProtocol extends Protocol
 
 			logger.fine("Connected");
 		}
+	}
+
+	protected Socket internalInitializeSocket() throws Exception {
+		Socket socket = new Socket();
+		socket.setTcpNoDelay(true);
+		socket.setSoTimeout(this.fTimeout);
+
+		socket.connect(
+				new InetSocketAddress(this.fHostName, this.fPort),
+				this.fTimeout
+		);
+
+		return socket;
 	}
 
 	// <summary>

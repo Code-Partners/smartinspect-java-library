@@ -11,7 +11,11 @@ import com.gurock.smartinspect.protocols.TcpProtocol;
 import com.gurock.smartinspect.protocols.cloud.exceptions.CloudProtocolExceptionReconnectAllowed;
 import com.gurock.smartinspect.protocols.cloud.exceptions.CloudProtocolExceptionReconnectForbidden;
 import com.gurock.smartinspect.protocols.cloud.exceptions.CloudProtocolExceptionWarning;
+import fr.gpotter2.sslkeystorefactories.SSLSocketKeystoreFactory;
 
+import javax.net.ssl.SSLSocket;
+import java.io.InputStream;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -109,10 +113,10 @@ public class CloudProtocol extends TcpProtocol {
         if (virtualFileMaxSize < MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
         if (virtualFileMaxSize > MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
 
-        this.fRotate = getRotateOption("rotate", FileRotate.None);
+        fRotate = getRotateOption("rotate", FileRotate.None);
 
-        this.fRotater = new FileRotater();
-        this.fRotater.setMode(this.fRotate);
+        fRotater = new FileRotater();
+        fRotater.setMode(fRotate);
 
         String customLabelsOption = getStringOption("customlabels", "");
         parseCustomLabelsOption(customLabelsOption);
@@ -359,6 +363,26 @@ public class CloudProtocol extends TcpProtocol {
             // unknown reply
             super.internalValidateWritePacketAnswer(bytesRead, answerBytes);
         }
+    }
+
+    @Override
+    protected Socket internalInitializeSocket() throws Exception {
+        InputStream resource = getClass().getClassLoader().getResourceAsStream("client.trust");
+
+        SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
+                fHostName, fPort, resource, "password", SSLSocketKeystoreFactory.SecureType.TLSv1_2
+        );
+
+        if (socket != null) {
+            socket.setTcpNoDelay(true);
+            socket.setSoTimeout(this.fTimeout);
+
+            socket.startHandshake();
+        } else {
+            throw new Exception("SSL socket creation failed");
+        }
+
+        return socket;
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 // <summary>
@@ -49,7 +48,7 @@ public class TcpProtocol extends Protocol
 	private static final int ANSWER_BUFFER_SIZE = 0x2000;
 
 	private Socket fSocket;
-	private InputStream fIstream;
+	protected InputStream fIstream;
 	protected OutputStream fOstream;
 	protected Formatter fFormatter;
 	private byte[] fAnswer;
@@ -160,14 +159,20 @@ public class TcpProtocol extends Protocol
 		this.fPort = getIntegerOption("port", 4228);
 	}
 
-	private static void doHandShake(InputStream is, OutputStream os)
-		throws IOException, SmartInspectException
+	protected void doHandShake() throws IOException, SmartInspectException
 	{
+		readServerBanner();
+		sendClientBanner();
+	}
+
+	protected void readServerBanner() throws SmartInspectException, IOException {
 		int n;
 
 		// Read the server banner from the Console.
-		while ( (n = is.read()) != '\n')
+		while ( (n = fIstream.read()) != '\n')
 		{
+			System.out.println("n = " + n + ", " + (char) n);
+
 			if (n == -1)
 			{
 				// This indicates a failure on the server
@@ -175,14 +180,17 @@ public class TcpProtocol extends Protocol
 
 				throw new SmartInspectException(
 						"Could not read server banner correctly: " +
-						"Connection has been closed unexpectedly"
-					);
+								"Connection has been closed unexpectedly"
+				);
 			}
 		}
+		System.out.println("n = " + n + ", " + (char) n);
+	}
 
+	protected void sendClientBanner() throws IOException {
 		// And write ours in return!
-		os.write(CLIENT_BANNER, 0, CLIENT_BANNER.length);
-		os.flush();
+		fOstream.write(CLIENT_BANNER, 0, CLIENT_BANNER.length);
+		fOstream.flush();
 	}
 
 	// <summary>
@@ -214,7 +222,7 @@ public class TcpProtocol extends Protocol
 					this.fSocket.getOutputStream(), BUFFER_SIZE
 				);
 
-			doHandShake(this.fIstream, this.fOstream);
+			doHandShake();
 			internalWriteLogHeader(); /* Write the log header */
 
 			logger.fine("Connected");

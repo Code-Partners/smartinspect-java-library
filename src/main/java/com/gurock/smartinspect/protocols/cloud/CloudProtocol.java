@@ -2,6 +2,7 @@ package com.gurock.smartinspect.protocols.cloud;
 
 import com.gurock.smartinspect.FileRotate;
 import com.gurock.smartinspect.FileRotater;
+import com.gurock.smartinspect.SmartInspectException;
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
 import com.gurock.smartinspect.packets.LogHeader;
 import com.gurock.smartinspect.packets.Packet;
@@ -14,6 +15,7 @@ import com.gurock.smartinspect.protocols.cloud.exceptions.CloudProtocolException
 import fr.gpotter2.sslkeystorefactories.SSLSocketKeystoreFactory;
 
 import javax.net.ssl.SSLSocket;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -187,6 +189,12 @@ public class CloudProtocol extends TcpProtocol {
         }
 
         return result.toString();
+    }
+
+    @Override
+    protected void doHandShake() throws IOException, SmartInspectException {
+        sendClientBanner();
+        readServerBanner();
     }
 
     @Override

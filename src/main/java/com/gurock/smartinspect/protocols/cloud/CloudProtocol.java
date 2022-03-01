@@ -378,7 +378,7 @@ public class CloudProtocol extends TcpProtocol {
         InputStream resource = getClass().getClassLoader().getResourceAsStream("client.trust");
 
         SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
-                fHostName, fPort, resource, "password", SSLSocketKeystoreFactory.SecureType.TLSv1_2
+                fHostName, fPort, resource, "xyh8PCNcLDVx4ZHm", SSLSocketKeystoreFactory.SecureType.TLSv1_2
         );
 
         if (socket != null) {

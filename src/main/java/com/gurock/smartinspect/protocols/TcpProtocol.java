@@ -171,8 +171,6 @@ public class TcpProtocol extends Protocol
 		// Read the server banner from the Console.
 		while ( (n = fIstream.read()) != '\n')
 		{
-			System.out.println("n = " + n + ", " + (char) n);
-
 			if (n == -1)
 			{
 				// This indicates a failure on the server
@@ -184,7 +182,6 @@ public class TcpProtocol extends Protocol
 				);
 			}
 		}
-		System.out.println("n = " + n + ", " + (char) n);
 	}
 
 	protected void sendClientBanner() throws IOException {

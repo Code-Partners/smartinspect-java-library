@@ -15,6 +15,7 @@ import com.gurock.smartinspect.protocols.cloud.exceptions.CloudProtocolException
 import fr.gpotter2.sslkeystorefactories.SSLSocketKeystoreFactory;
 
 import javax.net.ssl.SSLSocket;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -69,6 +70,14 @@ public class CloudProtocol extends TcpProtocol {
     private FileRotater fRotater;
     private FileRotate fRotate;
 
+    private String certificateLocation;
+    private String certificateFilePath;
+    private String certificatePassword;
+
+    private static String DEFAULT_CERTIFICATE_LOCATION = "resource";
+    private static String DEFAULT_CERTIFICATE_FILEPATH = "client.trust";
+    private static String DEFAULT_CERTIFICATE_PASSWORD = "xyh8PCNcLDVx4ZHm";
+
     private ScheduledExecutorService chunkFlushExecutor = null;
 
     private void resetChunk() {
@@ -93,6 +102,10 @@ public class CloudProtocol extends TcpProtocol {
 
             || name.equals("maxsize")
             || name.equals("rotate")
+
+            || name.equals("tls.certificate.location")
+            || name.equals("tls.certificate.filepath")
+            || name.equals("tls.certificate.password")
 
             || super.isValidOption(name);
     }
@@ -120,6 +133,10 @@ public class CloudProtocol extends TcpProtocol {
         fRotater = new FileRotater();
         fRotater.setMode(fRotate);
 
+        certificateLocation = getStringOption("tls.certificate.location", DEFAULT_CERTIFICATE_LOCATION);
+        certificateFilePath = getStringOption("tls.certificate.filepath", DEFAULT_CERTIFICATE_FILEPATH);
+        certificatePassword = getStringOption("tls.certificate.password", DEFAULT_CERTIFICATE_PASSWORD);
+
         String customLabelsOption = getStringOption("customlabels", "");
         parseCustomLabelsOption(customLabelsOption);
     }
@@ -136,6 +153,10 @@ public class CloudProtocol extends TcpProtocol {
 
         builder.addOption("maxsize", (int) (virtualFileMaxSize / 1024));
         builder.addOption("rotate", this.fRotate);
+
+        builder.addOption("tls.certificate.location", certificateLocation);
+        builder.addOption("tls.certificate.filepath", certificateFilePath);
+        builder.addOption("tls.certificate.password", certificatePassword);
     }
 
     @Override
@@ -375,10 +396,17 @@ public class CloudProtocol extends TcpProtocol {
 
     @Override
     protected Socket internalInitializeSocket() throws Exception {
-        InputStream resource = getClass().getClassLoader().getResourceAsStream("client.trust");
+        String location = certificateLocation;
+
+        InputStream resource;
+        if (location.equals("resource")) {
+            resource = getClass().getClassLoader().getResourceAsStream(certificateFilePath);
+        } else {
+            resource = new FileInputStream(certificateFilePath);
+        }
 
         SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
-                fHostName, fPort, resource, "xyh8PCNcLDVx4ZHm", SSLSocketKeystoreFactory.SecureType.TLSv1_2
+                fHostName, fPort, resource, certificatePassword, SSLSocketKeystoreFactory.SecureType.TLSv1_2
         );
 
         if (socket != null) {

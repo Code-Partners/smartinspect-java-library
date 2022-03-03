@@ -43,7 +43,7 @@ public class TcpProtocol extends Protocol
 	private static final int BUFFER_SIZE = 0x2000;
 	private static final byte[] CLIENT_BANNER =
 		("SmartInspect Java Library v" + SmartInspect.getVersion() +
-		"\r\n").getBytes();
+		"\n").getBytes();
 
 	private static final int ANSWER_BUFFER_SIZE = 0x2000;
 

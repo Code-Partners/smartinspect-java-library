@@ -70,13 +70,14 @@ public class CloudProtocol extends TcpProtocol {
     private FileRotater fRotater;
     private FileRotate fRotate;
 
-    private String certificateLocation;
-    private String certificateFilePath;
-    private String certificatePassword;
+    private boolean tlsEnabled;
+    private String tlsCertificateLocation;
+    private String tlsCertificateFilePath;
+    private String tlsCertificatePassword;
 
-    private static String DEFAULT_CERTIFICATE_LOCATION = "resource";
-    private static String DEFAULT_CERTIFICATE_FILEPATH = "client.trust";
-    private static String DEFAULT_CERTIFICATE_PASSWORD = "xyh8PCNcLDVx4ZHm";
+    private static String DEFAULT_TLS_CERTIFICATE_LOCATION = "resource";
+    private static String DEFAULT_TLS_CERTIFICATE_FILEPATH = "client.trust";
+    private static String DEFAULT_TLS_CERTIFICATE_PASSWORD = "xyh8PCNcLDVx4ZHm";
 
     private ScheduledExecutorService chunkFlushExecutor = null;
 
@@ -103,6 +104,7 @@ public class CloudProtocol extends TcpProtocol {
             || name.equals("maxsize")
             || name.equals("rotate")
 
+            || name.equals("tls.enabled")
             || name.equals("tls.certificate.location")
             || name.equals("tls.certificate.filepath")
             || name.equals("tls.certificate.password")
@@ -133,9 +135,10 @@ public class CloudProtocol extends TcpProtocol {
         fRotater = new FileRotater();
         fRotater.setMode(fRotate);
 
-        certificateLocation = getStringOption("tls.certificate.location", DEFAULT_CERTIFICATE_LOCATION);
-        certificateFilePath = getStringOption("tls.certificate.filepath", DEFAULT_CERTIFICATE_FILEPATH);
-        certificatePassword = getStringOption("tls.certificate.password", DEFAULT_CERTIFICATE_PASSWORD);
+        tlsEnabled = getBooleanOption("tls.enabled", true);
+        tlsCertificateLocation = getStringOption("tls.certificate.location", DEFAULT_TLS_CERTIFICATE_LOCATION);
+        tlsCertificateFilePath = getStringOption("tls.certificate.filepath", DEFAULT_TLS_CERTIFICATE_FILEPATH);
+        tlsCertificatePassword = getStringOption("tls.certificate.password", DEFAULT_TLS_CERTIFICATE_PASSWORD);
 
         String customLabelsOption = getStringOption("customlabels", "");
         parseCustomLabelsOption(customLabelsOption);
@@ -154,9 +157,10 @@ public class CloudProtocol extends TcpProtocol {
         builder.addOption("maxsize", (int) (virtualFileMaxSize / 1024));
         builder.addOption("rotate", this.fRotate);
 
-        builder.addOption("tls.certificate.location", certificateLocation);
-        builder.addOption("tls.certificate.filepath", certificateFilePath);
-        builder.addOption("tls.certificate.password", certificatePassword);
+        builder.addOption("tls.enabled", tlsEnabled);
+        builder.addOption("tls.certificate.location", tlsCertificateLocation);
+        builder.addOption("tls.certificate.filepath", tlsCertificateFilePath);
+        builder.addOption("tls.certificate.password", tlsCertificatePassword);
     }
 
     @Override
@@ -396,33 +400,37 @@ public class CloudProtocol extends TcpProtocol {
 
     @Override
     protected Socket internalInitializeSocket() throws Exception {
-        String location = certificateLocation;
+        if (tlsEnabled) {
+            String location = tlsCertificateLocation;
 
-        InputStream resource;
-        if (location.equals("resource")) {
-            resource = getClass().getClassLoader().getResourceAsStream(certificateFilePath);
+            InputStream resource;
+            if (location.equals("resource")) {
+                resource = getClass().getClassLoader().getResourceAsStream(tlsCertificateFilePath);
+            } else {
+                resource = new FileInputStream(tlsCertificateFilePath);
+            }
+
+            long timestamp = System.nanoTime();
+            SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
+                    fHostName, fPort, resource, tlsCertificatePassword, SSLSocketKeystoreFactory.SecureType.TLSv1_2
+            );
+            long elapsedMs = (System.nanoTime() - timestamp) / 1000000;
+
+            logger.fine("SSL socket created in " + elapsedMs + "ms");
+
+            if (socket != null) {
+                socket.setTcpNoDelay(true);
+                socket.setSoTimeout(this.fTimeout);
+
+                socket.startHandshake();
+            } else {
+                throw new Exception("SSL socket creation failed");
+            }
+
+            return socket;
         } else {
-            resource = new FileInputStream(certificateFilePath);
+            return super.internalInitializeSocket();
         }
-
-        long timestamp = System.nanoTime();
-        SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
-                fHostName, fPort, resource, certificatePassword, SSLSocketKeystoreFactory.SecureType.TLSv1_2
-        );
-        long elapsedMs = (System.nanoTime() - timestamp) / 1000000;
-
-        logger.fine("SSL socket created in " + elapsedMs + "ms");
-
-        if (socket != null) {
-            socket.setTcpNoDelay(true);
-            socket.setSoTimeout(this.fTimeout);
-
-            socket.startHandshake();
-        } else {
-            throw new Exception("SSL socket creation failed");
-        }
-
-        return socket;
     }
 
     @Override

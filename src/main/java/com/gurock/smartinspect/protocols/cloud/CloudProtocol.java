@@ -405,9 +405,13 @@ public class CloudProtocol extends TcpProtocol {
             resource = new FileInputStream(certificateFilePath);
         }
 
+        long timestamp = System.nanoTime();
         SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
                 fHostName, fPort, resource, certificatePassword, SSLSocketKeystoreFactory.SecureType.TLSv1_2
         );
+        long elapsedMs = (System.nanoTime() - timestamp) / 1000000;
+
+        logger.fine("SSL socket created in " + elapsedMs + "ms");
 
         if (socket != null) {
             socket.setTcpNoDelay(true);

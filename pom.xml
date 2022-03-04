@@ -6,7 +6,7 @@
 
     <groupId>com.smartinspect</groupId>
     <artifactId>smartinspect-java-library</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1-chunking-by-packet-count-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

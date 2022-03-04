@@ -47,6 +47,7 @@ public class CloudProtocol extends TcpProtocol {
     private boolean chunkingEnabled;
     private long chunkMaxSize;
     private int chunkMaxAge; // milliseconds
+    private int chunkMaxPacketCount;
 
     private long virtualFileMaxSize;
 
@@ -83,7 +84,7 @@ public class CloudProtocol extends TcpProtocol {
 
     private void resetChunk() {
         logger.fine("Resetting chunk");
-        chunk = new Chunk(chunkMaxSize);
+        chunk = new Chunk(chunkMaxSize, chunkMaxPacketCount);
     }
 
     @Override
@@ -100,6 +101,7 @@ public class CloudProtocol extends TcpProtocol {
             || name.equals("chunking.enabled")
             || name.equals("chunking.maxsize")
             || name.equals("chunking.maxagems")
+            || name.equals("chunking.maxpacketcount")
 
             || name.equals("maxsize")
             || name.equals("rotate")
@@ -125,6 +127,8 @@ public class CloudProtocol extends TcpProtocol {
 
         chunkMaxAge = getIntegerOption("chunking.maxagems", DEFAULT_CHUNK_MAX_AGE);
         if (chunkMaxAge < MIN_ALLOWED_CHUNK_MAX_AGE) chunkMaxAge = MIN_ALLOWED_CHUNK_MAX_AGE;
+
+        chunkMaxPacketCount = getIntegerOption("chunking.maxpacketcount", Integer.MAX_VALUE);
 
         virtualFileMaxSize = getSizeOption("maxsize", DEFAULT_VIRTUAL_FILE_MAX_SIZE);
         if (virtualFileMaxSize < MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
@@ -153,6 +157,7 @@ public class CloudProtocol extends TcpProtocol {
         builder.addOption("chunking.enabled", chunkingEnabled);
         builder.addOption("chunking.maxsize", (int) (chunkMaxSize / 1024));
         builder.addOption("chunking.maxagems", chunkMaxAge);
+        builder.addOption("chunking.maxpacketcount", chunkMaxPacketCount);
 
         builder.addOption("maxsize", (int) (virtualFileMaxSize / 1024));
         builder.addOption("rotate", this.fRotate);

@@ -17,6 +17,7 @@ public class Chunk extends Packet {
 
     private Formatter formatter;
     private long chunkMaxSize;
+    private int maxPacketCount;
 
     public ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -24,9 +25,10 @@ public class Chunk extends Packet {
     private int lastCompiledPacketSize;
     private long nanoTimeOfFirstPacket = 0;
 
-    public Chunk(long chunkMaxSize) {
+    public Chunk(long chunkMaxSize, int maxPacketCount) {
         this.formatter = new BinaryFormatter();
         this.chunkMaxSize = chunkMaxSize;
+        this.maxPacketCount = maxPacketCount;
     }
 
     @Override
@@ -48,11 +50,13 @@ public class Chunk extends Packet {
 
     public boolean canFitFormattedPacket() {
         logger.fine(String.format(
-                "Check if packet of size %d can fit into the chunk, remaining bytes - %d",
-                lastCompiledPacketSize, chunkMaxSize - this.getSize()
+                "Check if packet of size %d can fit into the chunk, remaining bytes - %d, remaining packets - %d",
+                lastCompiledPacketSize, chunkMaxSize - this.getSize(), maxPacketCount - packetCount
         ));
 
-        return lastCompiledPacketSize + this.getSize() <= chunkMaxSize;
+        return
+                (lastCompiledPacketSize + this.getSize() <= chunkMaxSize)
+                        && (packetCount < maxPacketCount);
     }
 
     public void chunkFormattedPacket() throws IOException {

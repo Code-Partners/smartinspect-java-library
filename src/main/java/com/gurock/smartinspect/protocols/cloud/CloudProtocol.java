@@ -53,6 +53,8 @@ public class CloudProtocol extends TcpProtocol {
     private Chunk chunk = null;
     private final Object chunkingLock = new Object();
 
+    private static String DEFAULT_REGION = "eu-central-1";
+
     private static int MAX_ALLOWED_CHUNK_MAX_SIZE = 395 * 1024;
     private static int MIN_ALLOWED_CHUNK_MAX_SIZE = 10 * 1024;
     private static int DEFAULT_CHUNK_MAX_SIZE = 395 * 1024;
@@ -97,6 +99,8 @@ public class CloudProtocol extends TcpProtocol {
             name.equals("writekey")
             || name.equals("customlabels")
 
+            || name.equals("region")
+
             || name.equals("chunking.enabled")
             || name.equals("chunking.maxsize")
             || name.equals("chunking.maxagems")
@@ -116,6 +120,12 @@ public class CloudProtocol extends TcpProtocol {
     protected void loadOptions() {
         super.loadOptions();
         writeKey = getStringOption("writekey", "");
+
+        String region = getStringOption("region", DEFAULT_REGION);
+        // in host is not set explicitly, infer it form region
+        if ((getStringOption("host", "").equals(""))) {
+            fHostName = String.format("packet-receiver.%s.cloud.smartinspect.com", region);
+        }
 
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 

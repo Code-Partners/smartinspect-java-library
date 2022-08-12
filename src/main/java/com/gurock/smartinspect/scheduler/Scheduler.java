@@ -27,11 +27,21 @@ package com.gurock.smartinspect.scheduler;
 import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.protocols.Protocol;
 import com.gurock.smartinspect.protocols.ProtocolCommand;
+import com.gurock.smartinspect.protocols.ProtocolException;
+import com.gurock.smartinspect.protocols.cloud.CloudProtocol;
+
+import java.util.logging.Logger;
 
 public class Scheduler
 {
+	public static final Logger logger = Logger.getLogger(Scheduler.class.getName());
+
 	class SchedulerThread extends Thread
 	{
+		// when fail count > 0, cloud protocol scheduler waits between
+		// queue processing iterations
+		int consecutivePacketWriteFailCount = 0;
+
 		public void run()
 		{
 			while (true)
@@ -46,6 +56,19 @@ public class Scheduler
 				if (!runCommands(count))
 				{
 					break; /* Stopped */
+				}
+
+				if (fProtocol instanceof CloudProtocol) {
+					// if the previous packet sending failed, do not retry immediately
+					if (consecutivePacketWriteFailCount > 0) {
+						try {
+							logger.fine("Previous packet failed to send, waiting one second before trying again");
+
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							throw new RuntimeException(e);
+						}
+					}
 				}
 			}
 			
@@ -102,8 +125,7 @@ public class Scheduler
 				}
 				else if (action == SchedulerAction.WritePacket)
 				{
-					Packet packet = (Packet) command.getState();
-					fProtocol.implWritePacket(packet);				
+					writePacketAction(command);
 				}
 				else if (action == SchedulerAction.Disconnect)
 				{
@@ -121,9 +143,31 @@ public class Scheduler
 				/* Cannot happen, see above, but required */
 			}
 		}
+
+		private void writePacketAction(SchedulerCommand command) throws ProtocolException {
+			Packet packet = (Packet) command.getState();
+			fProtocol.implWritePacket(packet);
+
+			// if sending packet failed, put it back to the head of the queue,
+			// instead of discarding
+			if ((fProtocol instanceof CloudProtocol) && fProtocol.failed()) {
+				consecutivePacketWriteFailCount++;
+
+				logger.fine(
+						"Sending packet failing, scheduling again to the head of the queue, " +
+						"consecutive fail count = " + consecutivePacketWriteFailCount
+				);
+				fProtocol.scheduleWritePacket(packet, SchedulerQueue.QueueEnd.HEAD);
+			} else {
+				consecutivePacketWriteFailCount = 0;
+			}
+		}
 	}
-	
+
 	private static final int BUFFER_SIZE = 0x10;
+
+	// for preserving order while re-queueing packets (see `runCommand`), buffer size is set to 1
+	private static final int CLOUD_PROTOCOL_BUFFER_SIZE = 0x1;
 	
 	private Thread fThread;
 	private SchedulerQueue fQueue;
@@ -148,7 +192,9 @@ public class Scheduler
 		this.fProtocol = protocol;
 		this.fMonitor = new Object();
 		this.fQueue = new SchedulerQueue();
-		this.fBuffer = new SchedulerCommand[BUFFER_SIZE];
+
+		int size = fProtocol instanceof CloudProtocol ? CLOUD_PROTOCOL_BUFFER_SIZE : BUFFER_SIZE;
+		this.fBuffer = new SchedulerCommand[size];
 	}
 	
 	// <summary>

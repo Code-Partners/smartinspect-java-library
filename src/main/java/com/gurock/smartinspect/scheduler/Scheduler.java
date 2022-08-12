@@ -306,12 +306,12 @@ public class Scheduler
 	//   setThreshold).
 	// </remarks>
 
-	public boolean schedule(SchedulerCommand command)
+	public boolean schedule(SchedulerCommand command, SchedulerQueue.QueueEnd insertTo)
 	{
-		return enqueue(command);
+		return enqueue(command, insertTo);
 	}
 	
-	private boolean enqueue(SchedulerCommand command)
+	private boolean enqueue(SchedulerCommand command, SchedulerQueue.QueueEnd insertTo)
 	{
 		if (!this.fStarted)
 		{
@@ -352,8 +352,8 @@ public class Scheduler
 					}
 				}
 			}
-			
-			this.fQueue.enqueue(command);
+
+			this.fQueue.enqueue(command, insertTo);
 			this.fMonitor.notify();
 		}
 		

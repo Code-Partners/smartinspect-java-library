@@ -15,6 +15,7 @@ import com.gurock.smartinspect.packets.PacketQueue;
 import com.gurock.smartinspect.scheduler.Scheduler;
 import com.gurock.smartinspect.scheduler.SchedulerAction;
 import com.gurock.smartinspect.scheduler.SchedulerCommand;
+import com.gurock.smartinspect.scheduler.SchedulerQueue;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -85,7 +86,7 @@ public abstract class Protocol
 	private long fAsyncQueue;
 	private boolean fAsyncThrottle;
 	private boolean fAsyncClearOnDisconnect;
-	
+
 	/* Internal data */
 	private String fAppName;
 	private String fHostName;
@@ -971,7 +972,7 @@ public abstract class Protocol
 	{
 		SchedulerCommand command = new SchedulerCommand();
 		command.setAction(SchedulerAction.Connect);
-		this.fScheduler.schedule(command);
+		this.fScheduler.schedule(command, SchedulerQueue.QueueEnd.TAIL);
 	}
 	
 	// <summary>
@@ -1141,7 +1142,7 @@ public abstract class Protocol
 	{
 		SchedulerCommand command = new SchedulerCommand();
 		command.setAction(SchedulerAction.Disconnect);
-		this.fScheduler.schedule(command);
+		this.fScheduler.schedule(command, SchedulerQueue.QueueEnd.TAIL);
 	}
 
 	// <summary>
@@ -1329,12 +1330,12 @@ public abstract class Protocol
 		}
 	}
 		
-	private void scheduleWritePacket(Packet packet)
+	public void scheduleWritePacket(Packet packet, SchedulerQueue.QueueEnd insertTo)
 	{
 		SchedulerCommand command = new SchedulerCommand();
 		command.setAction(SchedulerAction.WritePacket);
 		command.setState(packet);
-		this.fScheduler.schedule(command);
+		this.fScheduler.schedule(command, insertTo);
 	}
 	
 	// <summary>
@@ -1389,7 +1390,7 @@ public abstract class Protocol
 					return; /* Not running */
 				}
 				
-				scheduleWritePacket(packet);
+				scheduleWritePacket(packet, SchedulerQueue.QueueEnd.TAIL);
 			}			
 			else 
 			{
@@ -1462,7 +1463,7 @@ public abstract class Protocol
 		SchedulerCommand command = new SchedulerCommand();
 		command.setAction(SchedulerAction.Dispatch);
 		command.setState(cmd);
-		this.fScheduler.schedule(command);
+		this.fScheduler.schedule(command, SchedulerQueue.QueueEnd.TAIL);
 	}
 	
 	// <summary>

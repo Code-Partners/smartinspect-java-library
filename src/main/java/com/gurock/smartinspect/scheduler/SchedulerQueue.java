@@ -19,8 +19,16 @@ package com.gurock.smartinspect.scheduler;
 //   This class is not guaranteed to be threadsafe.
 // </threadsafety>
 
+import java.util.logging.Logger;
+
 public class SchedulerQueue
 {
+	public static final Logger logger = Logger.getLogger(SchedulerQueue.class.getName());
+
+	public enum QueueEnd {
+		HEAD, TAIL
+	}
+
 	private static final int OVERHEAD = 24;
 	private long fSize;
 	private int fCount;
@@ -45,14 +53,21 @@ public class SchedulerQueue
 	//   overhead). This queue does not have a maximum size or count.
 	// </remarks>
 
-	public void enqueue(SchedulerCommand command)
+	public void enqueue(SchedulerCommand command, QueueEnd insertTo)
 	{
 		SchedulerQueueItem item = new SchedulerQueueItem();
 		item.command = command;
-		add(item);
+
+		if (insertTo == QueueEnd.TAIL) {
+			addToQueueTail(item);
+		} else {
+			insertToQueueHead(item);
+		}
+
+		logger.fine("Item added, queue size = " + getSize() + " bytes");
 	}
 
-	private void add(SchedulerQueueItem item)
+	private void addToQueueTail(SchedulerQueueItem item)
 	{
 		if (this.fTail == null)
 		{
@@ -64,6 +79,26 @@ public class SchedulerQueue
 			this.fTail.next = item;
 			item.previous = this.fTail;
 			this.fTail = item;
+		}
+
+		this.fCount++;
+		this.fSize += item.command.getSize() + OVERHEAD;
+	}
+
+	private void insertToQueueHead(SchedulerQueueItem item)
+	{
+		if (this.fTail == null)
+		{
+			this.fTail = item;
+			this.fHead = item;
+		}
+		else
+		{
+			SchedulerQueueItem previousHead = fHead;
+
+			fHead = item;
+			item.next = previousHead;
+			previousHead.previous = item;
 		}
 
 		this.fCount++;
@@ -170,6 +205,8 @@ public class SchedulerQueue
 
 				if (removedBytes >= size)
 				{
+					logger.fine(removedBytes + " bytes trimmed");
+
 					return true;
 				}
 			}

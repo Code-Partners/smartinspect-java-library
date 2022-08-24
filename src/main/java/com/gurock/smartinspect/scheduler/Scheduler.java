@@ -24,7 +24,9 @@ package com.gurock.smartinspect.scheduler;
 //   This class is guaranteed to be threadsafe.
 // </threadsafety>
 
+import com.gurock.smartinspect.packets.LogHeader;
 import com.gurock.smartinspect.packets.Packet;
+import com.gurock.smartinspect.packets.logentry.LogEntry;
 import com.gurock.smartinspect.protocols.Protocol;
 import com.gurock.smartinspect.protocols.ProtocolCommand;
 import com.gurock.smartinspect.protocols.ProtocolException;
@@ -154,9 +156,18 @@ public class Scheduler
 				consecutivePacketWriteFailCount++;
 
 				logger.fine(
-						"Sending packet failing, scheduling again to the head of the queue, " +
+						"Sending packet failed, scheduling again to the head of the queue, " +
 						"consecutive fail count = " + consecutivePacketWriteFailCount
 				);
+
+				if (packet instanceof LogEntry) {
+					String title = ((LogEntry) packet).getTitle();
+					logger.fine("title = " + title);
+				} else if (packet instanceof LogHeader) {
+					String title = ((LogHeader) packet).getContent();
+					logger.fine("title = " + title);
+				}
+
 				fProtocol.scheduleWritePacket(packet, SchedulerQueue.QueueEnd.HEAD);
 			} else {
 				consecutivePacketWriteFailCount = 0;

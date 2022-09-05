@@ -85,6 +85,10 @@ public class CloudProtocol extends TcpProtocol {
 
     private ScheduledExecutorService chunkFlushExecutor = null;
 
+    public boolean isReconnectAllowed() {
+        return reconnectAllowed;
+    }
+
     private void resetChunk() {
         logger.fine("Resetting chunk");
         chunk = new Chunk(chunkMaxSize);

@@ -153,6 +153,12 @@ public class Scheduler
 			// if sending packet failed, put it back to the head of the queue,
 			// instead of discarding
 			if ((fProtocol instanceof CloudProtocol) && fProtocol.failed()) {
+				if (!((CloudProtocol) fProtocol).isReconnectAllowed()) {
+					logger.fine("Reconnect is disabled, no need to requeue packet we failed to send");
+
+					return;
+				}
+
 				consecutivePacketWriteFailCount++;
 
 				logger.fine(

@@ -4,6 +4,8 @@ import com.gurock.smartinspect.FileRotate;
 import com.gurock.smartinspect.FileRotater;
 import com.gurock.smartinspect.SmartInspectException;
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
+import com.gurock.smartinspect.formatters.BinaryFormatter;
+import com.gurock.smartinspect.formatters.Formatter;
 import com.gurock.smartinspect.packets.LogHeader;
 import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.packets.PacketType;
@@ -57,7 +59,7 @@ public class CloudProtocol extends TcpProtocol {
 
     private static int MAX_ALLOWED_CHUNK_MAX_SIZE = 395 * 1024;
     private static int MIN_ALLOWED_CHUNK_MAX_SIZE = 10 * 1024;
-    private static int DEFAULT_CHUNK_MAX_SIZE = 395 * 1024;
+    private static int PACKET_MAX_SIZE = 395 * 1024;
 
     private static int MIN_ALLOWED_CHUNK_MAX_AGE = 500;
     private static int DEFAULT_CHUNK_MAX_AGE = 1000;
@@ -129,7 +131,7 @@ public class CloudProtocol extends TcpProtocol {
 
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 
-        chunkMaxSize = getSizeOption("chunking.maxsize", DEFAULT_CHUNK_MAX_SIZE);
+        chunkMaxSize = getSizeOption("chunking.maxsize", PACKET_MAX_SIZE);
         if (chunkMaxSize < MIN_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MIN_ALLOWED_CHUNK_MAX_SIZE;
         if (chunkMaxSize > MAX_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MAX_ALLOWED_CHUNK_MAX_SIZE;
 
@@ -243,7 +245,11 @@ public class CloudProtocol extends TcpProtocol {
         maybeRotateVirtualFileId(packet);
 
         if (!chunkingEnabled) {
-            super.writePacket(packet);
+            if (validatePacketSize(packet)) {
+                super.writePacket(packet);
+            } else {
+                logger.fine("Packet exceed the max size and is ignored");
+            }
         } else {
             synchronized (chunkingLock) {
                 if (chunk == null) {
@@ -493,6 +499,26 @@ public class CloudProtocol extends TcpProtocol {
                     resetChunk();
                 }
             }
+        }
+    }
+
+
+    /**
+     * Validate size of an individual packet. It is done by creating a separate
+     * formatter, formatting packet and comparing its size to the max size.
+     * This is not optimal, but in reality cloud protocol will almost never work
+     * with individual (non chunked) packets.
+     * @param packet packet
+     * @return `true` if packet size <= max allowed size
+     */
+    private boolean validatePacketSize(Packet packet) {
+        Formatter formatter = new BinaryFormatter();
+        try {
+            int size = formatter.compile(packet);
+
+            return (size <= PACKET_MAX_SIZE);
+        } catch (IOException e) {
+            return true;
         }
     }
 }

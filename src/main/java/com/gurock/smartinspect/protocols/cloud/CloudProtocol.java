@@ -278,7 +278,11 @@ public class CloudProtocol extends TcpProtocol {
                                     packetCount
                             ));
 
-                            super.writePacket(chunk);
+                            if (chunk.packetCount > 0) {
+                                super.writePacket(chunk);
+                            } else {
+                                logger.fine("Do not flush chunk when packet does not fit, the chunk is empty");
+                            }
 
                             resetChunk();
                             chunk.compilePacket(packet);

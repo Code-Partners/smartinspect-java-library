@@ -858,7 +858,7 @@ public abstract class Protocol
 
 		this.fLevel = getLevelOption("level", Level.Debug);
 		this.fCaption = getStringOption("caption", getName());
-		this.fReconnect = getBooleanOption("reconnect", false);
+		this.fReconnect = getBooleanOption("reconnect", getReconnectDefaultValue());
 		this.fReconnectInterval = 
 			getTimespanOption("reconnect.interval", 0);
 
@@ -877,11 +877,19 @@ public abstract class Protocol
 
 		/* Asynchronous protocol options */
 
-		this.fAsyncEnabled = getBooleanOption("async.enabled", false);
+		this.fAsyncEnabled = getBooleanOption("async.enabled", getAsyncEnabledDefaultValue());
 		this.fAsyncThrottle = getBooleanOption("async.throttle", true);
 		this.fAsyncQueue = getSizeOption("async.queue", 2048);
 		this.fAsyncClearOnDisconnect = 
 			getBooleanOption("async.clearondisconnect", false);	
+	}
+
+	protected boolean getReconnectDefaultValue() {
+		return false;
+	}
+
+	protected boolean getAsyncEnabledDefaultValue() {
+		return false;
 	}
 
 	// <summary>

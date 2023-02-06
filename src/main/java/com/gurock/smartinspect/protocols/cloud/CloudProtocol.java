@@ -141,6 +141,16 @@ public class CloudProtocol extends TcpProtocol {
         parseCustomLabelsOption(customLabelsOption);
     }
 
+    @Override
+    protected boolean getReconnectDefaultValue() {
+        return true;
+    }
+
+    @Override
+    protected boolean getAsyncEnabledDefaultValue() {
+        return true;
+    }
+
     private void loadChunkingOptions() {
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 

@@ -133,6 +133,15 @@ public class CloudProtocol extends TcpProtocol {
             fHostName = String.format("packet-receiver.%s.cloud.smartinspect.com", region);
         }
 
+        loadChunkingOptions();
+        loadVirtualFileRotationOptions();
+        loadTlsOptions();
+
+        String customLabelsOption = getStringOption("customlabels", "");
+        parseCustomLabelsOption(customLabelsOption);
+    }
+
+    private void loadChunkingOptions() {
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 
         chunkMaxSize = getSizeOption("chunking.maxsize", PACKET_MAX_SIZE);
@@ -141,7 +150,9 @@ public class CloudProtocol extends TcpProtocol {
 
         chunkMaxAge = getIntegerOption("chunking.maxagems", DEFAULT_CHUNK_MAX_AGE);
         if (chunkMaxAge < MIN_ALLOWED_CHUNK_MAX_AGE) chunkMaxAge = MIN_ALLOWED_CHUNK_MAX_AGE;
+    }
 
+    private void loadVirtualFileRotationOptions() {
         virtualFileMaxSize = getSizeOption("maxsize", DEFAULT_VIRTUAL_FILE_MAX_SIZE);
         if (virtualFileMaxSize < MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
         if (virtualFileMaxSize > MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
@@ -150,14 +161,13 @@ public class CloudProtocol extends TcpProtocol {
 
         fRotater = new FileRotater();
         fRotater.setMode(fRotate);
+    }
 
+    private void loadTlsOptions() {
         tlsEnabled = getBooleanOption("tls.enabled", true);
         tlsCertificateLocation = getStringOption("tls.certificate.location", DEFAULT_TLS_CERTIFICATE_LOCATION);
         tlsCertificateFilePath = getStringOption("tls.certificate.filepath", DEFAULT_TLS_CERTIFICATE_FILEPATH);
         tlsCertificatePassword = getStringOption("tls.certificate.password", DEFAULT_TLS_CERTIFICATE_PASSWORD);
-
-        String customLabelsOption = getStringOption("customlabels", "");
-        parseCustomLabelsOption(customLabelsOption);
     }
 
     @Override

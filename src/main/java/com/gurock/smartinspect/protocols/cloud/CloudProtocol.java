@@ -184,7 +184,7 @@ public class CloudProtocol extends TcpProtocol {
     protected void buildOptions(ConnectionsBuilder builder) {
         super.buildOptions(builder);
         builder.addOption("writekey", writeKey);
-        builder.addOption("customlabels", composeCustomLabelsString());
+        builder.addOption("customlabels", composeCustomLabelsString(customLabels));
 
         builder.addOption("chunking.enabled", chunkingEnabled);
         builder.addOption("chunking.maxsize", (int) (chunkMaxSize / 1024));
@@ -204,7 +204,7 @@ public class CloudProtocol extends TcpProtocol {
         LogHeader packet = super.composeLogHeaderPacket();
         packet.addValue("writekey", writeKey);
         packet.addValue("virtualfileid", virtualFileId.toString());
-        packet.addValue("customlabels", composeCustomLabelsString());
+        packet.addValue("customlabels", composeCustomLabelsString(customLabels));
 
         return packet;
     }
@@ -236,7 +236,7 @@ public class CloudProtocol extends TcpProtocol {
         }
     }
 
-    private String composeCustomLabelsString() {
+    public static String composeCustomLabelsString(Map<String, String> customLabels) {
         StringBuilder result = new StringBuilder();
 
         for (Map.Entry<String, String> pair : customLabels.entrySet()) {

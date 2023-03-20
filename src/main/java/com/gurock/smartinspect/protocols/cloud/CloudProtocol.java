@@ -454,6 +454,12 @@ public class CloudProtocol extends TcpProtocol {
                 resource = new FileInputStream(tlsCertificateFilePath);
             }
 
+            if (resource == null) {
+                logger.fine("SSL certificate resource loading failed");
+
+                throw new Exception("SSL certificate resource loading failed");
+            }
+
             long timestamp = System.nanoTime();
             SSLSocket socket = SSLSocketKeystoreFactory.getSocketWithCert(
                     fHostName, fPort, resource, tlsCertificatePassword, SSLSocketKeystoreFactory.SecureType.TLSv1_2
@@ -468,6 +474,8 @@ public class CloudProtocol extends TcpProtocol {
 
                 socket.startHandshake();
             } else {
+                logger.fine("SSL socket creation failed");
+
                 throw new Exception("SSL socket creation failed");
             }
 

@@ -64,9 +64,9 @@ public class CloudProtocol extends TcpProtocol {
     private static int MIN_ALLOWED_CHUNK_MAX_AGE = 500;
     private static int DEFAULT_CHUNK_MAX_AGE = 1000;
 
-    private static int MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 300 * 1024 * 1024;
-    private static int MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 10 * 1024 * 1024;
-    private static int DEFAULT_VIRTUAL_FILE_MAX_SIZE = 100 * 1024 * 1024;
+    private static int MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 50 * 1024 * 1024;
+    private static int MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 1 * 1024 * 1024;
+    private static int DEFAULT_VIRTUAL_FILE_MAX_SIZE = 1 * 1024 * 1024;
 
     private static int MAX_ALLOWED_CUSTOM_LABEL_COUNT = 5;
     private static int MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH = 100;

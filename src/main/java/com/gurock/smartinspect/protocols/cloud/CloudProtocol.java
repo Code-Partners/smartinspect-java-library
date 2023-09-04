@@ -521,12 +521,12 @@ public class CloudProtocol extends TcpProtocol {
         }
     }
 
-    private void flushChunkByAge(boolean ignoreMaxAge) {
+    private void flushChunkByAge(boolean forceFlush) {
         synchronized (chunkingLock) {
             if (chunkingEnabled && (chunk != null)) {
                 boolean timeToFlush = chunk.millisecondsSinceTheFirstPacket() > chunkMaxAge;
                 if (chunk.packetCount > 0) {
-                    if (timeToFlush || ignoreMaxAge) {
+                    if (timeToFlush || forceFlush) {
                         if (timeToFlush) {
                             logger.fine(String.format(
                                     "More than %dms passed since the chunk was started, time to flush it",

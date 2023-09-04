@@ -387,7 +387,7 @@ public class CloudProtocol extends TcpProtocol {
             chunkFlushExecutor = Executors.newScheduledThreadPool(1);
 
             chunkFlushExecutor.scheduleWithFixedDelay(
-                    this::flushChunkByAge,
+                    () -> flushChunkByAge(false),
                     0, 100, TimeUnit.MILLISECONDS
             );
         }
@@ -397,6 +397,10 @@ public class CloudProtocol extends TcpProtocol {
 
     @Override
     public void disconnect() throws ProtocolException {
+        if (fConnected) {
+            flushChunkByAge(true);
+        }
+
         if (chunkFlushExecutor != null) {
             chunkFlushExecutor.shutdown();
             try {
@@ -517,22 +521,29 @@ public class CloudProtocol extends TcpProtocol {
         }
     }
 
-    private void flushChunkByAge() {
+    private void flushChunkByAge(boolean ignoreMaxAge) {
         synchronized (chunkingLock) {
             if (chunkingEnabled && (chunk != null)) {
-                if ((chunk.packetCount > 0) && (chunk.millisecondsSinceTheFirstPacket() > chunkMaxAge)) {
-                    logger.fine(String.format(
-                            "More than %dms passed since the chunk was started, time to flush it",
-                            chunkMaxAge
-                    ));
+                boolean timeToFlush = chunk.millisecondsSinceTheFirstPacket() > chunkMaxAge;
+                if (chunk.packetCount > 0) {
+                    if (timeToFlush || ignoreMaxAge) {
+                        if (timeToFlush) {
+                            logger.fine(String.format(
+                                    "More than %dms passed since the chunk was started, time to flush it",
+                                    chunkMaxAge
+                            ));
+                        } else {
+                            logger.fine("Forced chunk flush");
+                        }
 
-                    try {
-                        super.writePacket(chunk);
-                    } catch (Exception e) {
-                        logger.fine("Exception caught");
+                        try {
+                            super.writePacket(chunk);
+                        } catch (Exception e) {
+                            logger.fine("Exception caught");
+                        }
+
+                        resetChunk();
                     }
-
-                    resetChunk();
                 }
             }
         }

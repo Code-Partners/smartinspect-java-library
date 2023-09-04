@@ -397,9 +397,7 @@ public class CloudProtocol extends TcpProtocol {
 
     @Override
     public void disconnect() throws ProtocolException {
-        if (fConnected) {
-            flushChunkByAge(true);
-        }
+        flushChunkByAge(true);
 
         if (chunkFlushExecutor != null) {
             chunkFlushExecutor.shutdown();

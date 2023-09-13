@@ -6,11 +6,7 @@ package com.gurock.smartinspect;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 // <summary>
 //   SmartInspect is the most important class in the SmartInspect
@@ -65,7 +61,7 @@ import java.util.Set;
 
 public class SmartInspect
 {
-	private static final String VERSION = "$SIVERSION";
+	private static final String VERSION = "3.4.1.5";
 	
 	private static final String CAPTION_NOT_FOUND =
 		"No protocol could be found with the specified caption";	

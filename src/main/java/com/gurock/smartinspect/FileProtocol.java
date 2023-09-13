@@ -4,19 +4,14 @@
 
 package com.gurock.smartinspect;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
-import java.util.Date;
-
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.util.Date;
 
 // <summary>
 //   The standard SmartInspect protocol for writing log packets to a log

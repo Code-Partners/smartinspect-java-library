@@ -22,12 +22,14 @@ package com.gurock.smartinspect;
 //   thread.
 // </threadsafety>
 
-public class LogHeader extends Packet 
+import java.util.HashMap;
+import java.util.Map;
+
+public class LogHeader extends Packet
 {
 	private static final int HEADER_SIZE = 4;
-	
-	private String fAppName;
-	private String fHostName;
+
+ 	private final Map<String, String> values = new HashMap<>();
 	
 	// <summary>
 	//   Overridden. Returns the total occupied memory size of this Log
@@ -77,71 +79,22 @@ public class LogHeader extends Packet
 	
 	public String getContent()
 	{
-		return "hostname=" +
-			(this.fHostName != null ? this.fHostName : "") +
-			"\r\n" +
-			"appname=" +
-			(this.fAppName != null ? this.fAppName : "") +
-			"\r\n";
-	}
-	
-	// <summary>
-	//   Returns the hostname of this Log Header.
-	// </summary>
-	// <returns>
-	//   The hostname of the Log Header or null if the hostname has not
-	//   been set.
-	// </returns>
-	// <remarks>
-	//   The hostname of a Log Header is usually set to the name of the
-	//   machine this Log Entry is sent from. This method can return
-	//   null if this Log Header does not contain a hostname.
-	// </remarks>
-	
-	public String getHostName()
-	{
-		return this.fHostName;
+		StringBuilder content = new StringBuilder();
+
+		for (Map.Entry<String, String> entry : values.entrySet()) {
+			String v = entry.getValue() != null ? entry.getValue() : "";
+
+			content.append(entry.getKey())
+					.append('=')
+					.append(v)
+					.append("\r\n");
+		}
+
+		return content.toString();
 	}
 
-	// <summary>
-	//   Sets the hostname of this Log Header.
-	// </summary>
-	// <param name="hostName">
-	//   The new hostname of this Log Header. Can be null.</param>
-
-	public void setHostName(String hostName)
-	{
-		this.fHostName = hostName;
+	public void addValue(String key, String value) {
+		values.put(key, value);
 	}
 
-	// <summary>
-	//   Returns the application name of this Log Header.
-	// </summary>
-	// <returns>
-	//   The application name of the Log Header or null if the application
-	//   name has not been set.
-	// </returns>
-	// <remarks>
-	//   The application name of a Log Header is usually set to the name of
-	//   the application this Log Header is created in. This method can
-	//   return null if this Log Header does not contain an application
-	//   name.
-	// </remarks>
-
-	public String getAppName()
-	{
-		return this.fAppName;
-	}
-
-	// <summary>
-	//   Sets the application name of this Log Header.
-	// </summary>
-	// <param name="appName">
-	//   The new application name of this Log Header. Can be null.
-	// </param>
-
-	public void setAppName(String appName)
-	{
-		this.fAppName = appName;
-	}
 }

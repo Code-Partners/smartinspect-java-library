@@ -4,11 +4,12 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Logger;
 
 // <summary>
 //   Responsible for formatting and writing a packet in the standard
@@ -27,6 +28,8 @@ import java.io.UnsupportedEncodingException;
 
 public class BinaryFormatter extends Formatter 
 {
+	private static final Logger logger = Logger.getLogger(BinaryFormatter.class.getName());
+
 	private static final long MICROSECONDS_PER_DAY = 86400000000L;
 	private static final int DAY_OFFSET = 25569;
 	private static final int MAX_STREAM_CAPACITY = 1 * 1024 * 1024;
@@ -102,11 +105,14 @@ public class BinaryFormatter extends Formatter
 		{
 			compileProcessFlow();
 		}
+		else if (type == PacketType.Chunk) {
+			compilePacketChunk();
+		}
 	
 		this.fSize = this.fStream.size();
 		return this.fSize + Packet.PACKET_HEADER;
 	}
-	
+
 	private final void writeTimestamp(long value) throws IOException
 	{
 		long us;
@@ -304,7 +310,17 @@ public class BinaryFormatter extends Formatter
 		writeData(title);
 		writeData(hostName);
 	}
-	
+
+	private void compilePacketChunk() throws IOException {
+		Chunk chunk = (Chunk) this.fPacket;
+
+		writeShort(chunk.headerSize);
+		writeShort(chunk.chunkFormat);
+		writeInt(chunk.packetCount);
+		writeInt(chunk.stream.size());
+		chunk.stream.writeTo(fStream);
+	}
+
 	private void compileWatch() throws IOException
 	{
 		Watch watch = (Watch) this.fPacket;
@@ -346,6 +362,9 @@ public class BinaryFormatter extends Formatter
 		{
 			writeShort(stream, 
 				(short) this.fPacket.getPacketType().getIntValue());
+
+			logger.fine("body size = " + fSize);
+
 			writeInt(stream, this.fSize);
 			this.fStream.writeTo(stream);
 		}

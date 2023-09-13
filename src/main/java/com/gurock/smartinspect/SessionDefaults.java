@@ -4,7 +4,7 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
+import java.awt.*;
 
 // <summary>
 //   Specifies the default property values for newly created sessions.

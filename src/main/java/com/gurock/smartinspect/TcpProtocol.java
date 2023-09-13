@@ -5,11 +5,12 @@
 package com.gurock.smartinspect;
 
 import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.io.InputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.logging.Logger;
 
 // <summary>
 //   Used for sending packets to the SmartInspect Console over a TCP
@@ -28,17 +29,19 @@ import java.net.InetSocketAddress;
 
 public class TcpProtocol extends Protocol
 {
+	private static final Logger logger = Logger.getLogger(TcpProtocol.class.getName());
+
 	private static final int BUFFER_SIZE = 0x2000;
 	private static final byte[] CLIENT_BANNER =
-		("SmartInspect Java Library v" + SmartInspect.getVersion() + 
-		"\n").getBytes();
+		("SmartInspect Java Library v" + SmartInspect.getVersion() +
+		"\r\n").getBytes();
 
-	private static final int ANSWER_SIZE = 2;
+	private static final int ANSWER_BUFFER_SIZE = 0x2000;
 
 	private Socket fSocket;
 	private InputStream fIstream;
-	private OutputStream fOstream;
-	private Formatter fFormatter;
+	protected OutputStream fOstream;
+	protected Formatter fFormatter;
 	private byte[] fAnswer;
 
 	private String fHostName = "127.0.0.1";
@@ -53,7 +56,7 @@ public class TcpProtocol extends Protocol
 	
 	public TcpProtocol()
 	{
-		this.fAnswer = new byte[ANSWER_SIZE];
+		this.fAnswer = new byte[ANSWER_BUFFER_SIZE];
 		this.fFormatter = new BinaryFormatter();
 		loadOptions(); // Set default options
 	}
@@ -152,7 +155,7 @@ public class TcpProtocol extends Protocol
 	{
 		int n;
 
-		// Read the server banner from the Console. 
+		// Read the server banner from the Console.
 		while ( (n = is.read()) != '\n')
 		{
 			if (n == -1)
@@ -210,6 +213,8 @@ public class TcpProtocol extends Protocol
 
 			doHandShake(this.fIstream, this.fOstream);
 			internalWriteLogHeader(); /* Write the log header */
+
+			logger.fine("Connected");
 		}
 	}
 
@@ -231,14 +236,37 @@ public class TcpProtocol extends Protocol
 
 	protected void internalWritePacket(Packet packet) throws Exception
 	{
+		logger.fine(
+				"packet = " + packet + ", type = " + packet.getPacketType()
+				+ ", " + packet.getPacketType().getIntValue()
+//				+ ", " + packet.getSize()
+		);
+
+		if (packet instanceof LogEntry) {
+			String title = ((LogEntry) packet).getTitle();
+			logger.fine("title = " + title);
+		} else if (packet instanceof LogHeader) {
+			String title = ((LogHeader) packet).getContent();
+			logger.fine("title = " + title);
+		}
+
 		this.fFormatter.format(packet, this.fOstream);
+
 		this.fOstream.flush();
 
-		if (this.fIstream.read(this.fAnswer, 0, ANSWER_SIZE) != ANSWER_SIZE)
+		// in bytes
+		int answerSize = this.fIstream.read(this.fAnswer, 0, ANSWER_BUFFER_SIZE);
+
+		internalValidateWritePacketAnswer(answerSize, fAnswer);
+	}
+
+	protected void internalValidateWritePacketAnswer(int bytesRead, byte[] answerBytes) throws Exception {
+		// 2 bytes for OK
+		if (bytesRead != 2)
 		{
 			throw new SmartInspectException(
-				"Could not read server answer correctly: " +
-				"Connection has been closed unexpectedly"
+					"Could not read server answer correctly: " +
+							"Connection has been closed unexpectedly"
 			);
 		}
 	}

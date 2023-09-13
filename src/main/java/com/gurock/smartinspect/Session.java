@@ -4,29 +4,19 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
-
-import java.io.Reader;
+import java.awt.*;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.io.PrintWriter;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.Collection;
-import java.util.Map;
-
+import java.io.Reader;
+import java.io.StringWriter;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.AccessibleObject;
 import java.text.MessageFormat;
+import java.util.*;
 
 // <summary>
 //   Logs all kind of data and variables to the SmartInspect Console

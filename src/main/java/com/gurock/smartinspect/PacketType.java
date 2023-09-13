@@ -61,6 +61,9 @@ public final class PacketType extends Enum
 	public static final
 		PacketType LogHeader = new PacketType(7, "LogHeader");
 
+	public static final
+		PacketType Chunk = new PacketType(8, "Chunk");
+
 	private PacketType(int value, String name)
 	{
 		super(value, name);

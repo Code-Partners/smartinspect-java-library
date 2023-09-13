@@ -83,7 +83,7 @@ public abstract class Protocol
 	private boolean fFailed;
 	private LookupTable fOptions;
 	private PacketQueue fQueue;
-	private boolean fConnected;
+	protected boolean fConnected;
 	private boolean fInitialized;
 	private Object fLock;
 	private Scheduler fScheduler;
@@ -1187,11 +1187,17 @@ public abstract class Protocol
 		}
 	}
 
+	protected LogHeader composeLogHeaderPacket() {
+		LogHeader logHeader = new LogHeader();
+		logHeader.addValue("hostname", fHostName);
+		logHeader.addValue("appname", fAppName);
+
+		return logHeader;
+	}
+
 	protected void internalWriteLogHeader() throws Exception
 	{
-		LogHeader logHeader = new LogHeader();
-		logHeader.setHostName(this.fHostName);
-		logHeader.setAppName(this.fAppName);
+		Packet logHeader = composeLogHeaderPacket();
 		internalWritePacket(logHeader);
 	}
 	

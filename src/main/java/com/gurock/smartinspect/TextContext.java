@@ -4,12 +4,7 @@
 
 package com.gurock.smartinspect;
 
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 // <summary>
 //   Is the base class for all viewer contexts, which deal with text

@@ -4,7 +4,7 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
+import java.awt.*;
 
 // <summary>
 //   Represents the Log Entry packet type which is used for nearly all

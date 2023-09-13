@@ -4,7 +4,7 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

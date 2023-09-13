@@ -39,6 +39,7 @@ public final class ProtocolFactory
 		registerProtocol("tcp", TcpProtocol.class);
 		registerProtocol("text", TextProtocol.class);
 		registerProtocol("pipe", PipeProtocol.class);
+		registerProtocol("cloud", CloudProtocol.class);
 	}
 	
 	// </ignore>

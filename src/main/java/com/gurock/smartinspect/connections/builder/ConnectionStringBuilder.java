@@ -3,7 +3,7 @@ package com.gurock.smartinspect.connections.builder;
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
 
 public class ConnectionStringBuilder {
-    ConnectionsBuilder cb = new ConnectionsBuilder();
+    protected ConnectionsBuilder cb = new ConnectionsBuilder();
 
     public PipeProtocolConnectionStringBuilder addPipeProtocol() {
         cb.beginProtocol("pipe");

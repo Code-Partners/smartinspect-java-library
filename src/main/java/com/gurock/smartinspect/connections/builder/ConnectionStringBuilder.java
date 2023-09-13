@@ -30,11 +30,6 @@ public class ConnectionStringBuilder {
         return new TextProtocolConnectionStringBuilder(this);
     }
 
-    public CloudProtocolConnectionStringBuilder addCloudProtocol() {
-        cb.beginProtocol("cloud");
-        return new CloudProtocolConnectionStringBuilder(this);
-    }
-
     public String build() {
         return cb.getConnections();
     }

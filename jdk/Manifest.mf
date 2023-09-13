@@ -1,6 +1,0 @@
-Manifest-Version: $SIVERSION
-Implementation-Title: "SmartInspect JDK Adapter"
-Implementation-Version: "$SIVERSION"
-Implementation-Vendor: "Gurock Software GmbH"
-Implementation-Vendor-Id: "com.gurock"
-Implementation-URL: "http://www.gurock.com/products/smartinspect/"

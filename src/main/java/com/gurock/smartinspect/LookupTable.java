@@ -429,54 +429,60 @@ public class LookupTable
 	//   NullPointerException    The key argument is null.
 	// </table>
 	// </exception>
-	
+
 	public long getSizeValue(String key, long defaultValue)
 	{
 		long result = defaultValue * KB_FACTOR;
 		String value = getStringValue(key, null);
 
-		if (value != null) 
+		if (value != null)
 		{
-			int factor = KB_FACTOR;
-			value = value.trim();
-	
-			if (value.length() >= 2)
-			{
-				String unit = 
+			result = sizeToLong(value, defaultValue);
+		}
+
+		return result;
+	}
+
+	public static long sizeToLong(String value, long defaultResult) {
+		long result = defaultResult;
+		int factor = KB_FACTOR;
+		value = value.trim();
+
+		if (value.length() >= 2)
+		{
+			String unit =
 					value.substring(value.length() - 2).toLowerCase();
 
-				if (isValidSizeUnit(unit))
-				{
-					value = value.substring(0, value.length() - 2).trim();
-					
-					if (unit.equals("kb"))
-					{
-						factor = KB_FACTOR;
-					}
-					else if (unit.equals("mb"))
-					{
-						factor = MB_FACTOR;
-					}
-					else if (unit.equals("gb"))
-					{
-						factor = GB_FACTOR;
-					}
-				}
-			}
-
-			if (isValidInteger(value))
+			if (isValidSizeUnit(unit))
 			{
-				try 
+				value = value.substring(0, value.length() - 2).trim();
+
+				if (unit.equals("kb"))
 				{
-					result = factor * Long.parseLong(value);
+					factor = KB_FACTOR;
 				}
-				catch (NumberFormatException e)
+				else if (unit.equals("mb"))
 				{
-					/* Return default */
+					factor = MB_FACTOR;
+				}
+				else if (unit.equals("gb"))
+				{
+					factor = GB_FACTOR;
 				}
 			}
 		}
 
+		if (isValidInteger(value))
+		{
+			try
+			{
+				result = factor * Long.parseLong(value);
+			}
+			catch (NumberFormatException e)
+			{
+				/* Return default */
+			}
+		}
 		return result;
 	}
 	

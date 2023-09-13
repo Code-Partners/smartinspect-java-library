@@ -1,6 +1,6 @@
 package com.gurock.smartinspect.connections.builder;
 
-import com.gurock.smartinspect.connections.ConnectionsBuilder;
+import com.gurock.smartinspect.ConnectionsBuilder;
 
 public class ConnectionStringBuilder {
     ConnectionsBuilder cb = new ConnectionsBuilder();

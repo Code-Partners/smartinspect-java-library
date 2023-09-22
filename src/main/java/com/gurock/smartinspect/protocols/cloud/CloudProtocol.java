@@ -31,6 +31,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/**
+ * Used for sending packets to the SmartInspect Cloud.
+ * <p>
+ * This class is used for sending packets to the Cloud. Cloud protocol
+ * implementation in an extension of the TCP protocol.
+ * It is used when the 'cloud' protocol is specified in
+ * the SmartInspect connections string. Please
+ * see the IsValidOption method for a list of available protocol
+ * options
+ *
+ * @see com.gurock.smartinspect.SmartInspect
+ */
 public class CloudProtocol extends TcpProtocol {
 
     public static final Logger logger = Logger.getLogger(CloudProtocol.class.getName());
@@ -55,17 +67,38 @@ public class CloudProtocol extends TcpProtocol {
     private Chunk chunk = null;
     private final Object chunkingLock = new Object();
 
+    /**
+     * Default Cloud region to connect to.
+     */
     private static String DEFAULT_REGION = "eu-central-1";
 
     private static int MAX_ALLOWED_CHUNK_MAX_SIZE = 395 * 1024;
     private static int MIN_ALLOWED_CHUNK_MAX_SIZE = 10 * 1024;
+
+    /**
+     * Maximal size of a packet that can be sent to the Cloud.
+     * When exceeded, the packet is ignored.
+     */
     private static int PACKET_MAX_SIZE = 395 * 1024;
 
     private static int MIN_ALLOWED_CHUNK_MAX_AGE = 500;
     private static int DEFAULT_CHUNK_MAX_AGE = 1000;
 
+    /**
+     * Maximal allowed size of a log file. Used as a limit for 'maxsize'
+     * option.
+     */
     private static int MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 50 * 1024 * 1024;
+
+    /**
+     * Minimal allowed size of a log file. Used as a limit for 'maxsize'
+     * option.
+     */
     private static int MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE = 1 * 1024 * 1024;
+
+    /**
+     * Default size of a log file.
+     */
     private static int DEFAULT_VIRTUAL_FILE_MAX_SIZE = 1 * 1024 * 1024;
 
     private static int MAX_ALLOWED_CUSTOM_LABEL_COUNT = 5;
@@ -94,11 +127,72 @@ public class CloudProtocol extends TcpProtocol {
         chunk = new Chunk(chunkMaxSize);
     }
 
+    /**
+     * Overridden. Returns 'cloud'.
+     * @return 'cloud'
+     */
     @Override
     protected String getName() {
         return "cloud";
     }
 
+    /**
+     * Overridden. Validates if a protocol option is supported.
+     * <p>
+     * The following table lists all valid options, their default values
+     * and descriptions for the TCP protocol.
+     * <table border="1">
+     * <tr>
+     * <th>Valid Options</th>
+     * <th>Default Value</th>
+     * <th>Description</th>
+     </tr>
+     *   <tr>
+     *     <td>writekey</td>
+     *     <td></td>
+     *     <td>Write key of your SmartInspect Cloud license.</td>
+     *   </tr>
+     *   <tr>
+     *     <td>customlabels</td>
+     *     <td></td>
+     *     <td>Up to 5 labels. See example below.</td>
+     *   </tr>
+     *   <tr>
+     *     <td>region</td>
+     *     <td>eu-central-1</td>
+     *     <td>SCloud region.</td>
+     *   </tr>
+     *   <tr>
+     *     <td>maxsize</td>
+     *     <td>'1 MB'</td>
+     *     <td>Specifies the maximum size of a log file in kilobytes. When this size is reached, the current log file is closed and a new file is opened. It is possible to specify size units like this: "1 MB". Supported units are "KB", "MB" and "GB". Min value - "1 MB", max value - "50 MB".</td>
+     *   </tr>
+     *   <tr>
+     *     <td>rotate</td>
+     *     <td>none</td>
+     *     <td>Specifies the rotate mode for log files. Please see below for a list of available values. A value of "none" disables this feature.</td>
+     *   </tr>
+     * </table>
+     *
+     * For further options which affect the behavior of this protocol,
+     * please have a look at the documentation of
+     * Protocol.isValidOption and TcpProtocol.isValidOption methods of the parent classes.
+     * <p>
+     * Example:
+     * <pre>
+     * smartInspect.setConnections(
+     *         (new CloudConnectionStringBuilder()).addCloudProtocol()
+     *             .setRegion("eu-central-1")
+     *             .setWriteKey("INSERT_YOUR_WRITE_KEY_HERE")
+     *             .addCustomLabel("User", "Bob")
+     *             .addCustomLabel("Version", "0.0.1")
+     *             .and().build()
+     * );
+     * </pre>
+     *
+     * @param name The option name to validate.
+     * @return True if the option is supported and false otherwise.
+     */
     @Override
     protected boolean isValidOption(String name) {
         return
@@ -122,6 +216,13 @@ public class CloudProtocol extends TcpProtocol {
             || super.isValidOption(name);
     }
 
+    /**
+     * Overridden. Loads and inspects Cloud specific options.
+     * <p>
+     * This method loads all relevant options and ensures their
+     * correctness. See IsValidOption for a list of options which
+     * are recognized by the TCP protocol.
+     */
     @Override
     protected void loadOptions() {
         super.loadOptions();
@@ -141,11 +242,19 @@ public class CloudProtocol extends TcpProtocol {
         parseCustomLabelsOption(customLabelsOption);
     }
 
+    /**
+     * Defines the default value for `reconnect` option as `true`.
+     * @return true
+     */
     @Override
     protected boolean getReconnectDefaultValue() {
         return true;
     }
 
+    /**
+     * Defines the default value for `async.enabled` option as `true`.
+     * @return true
+     */
     @Override
     protected boolean getAsyncEnabledDefaultValue() {
         return true;
@@ -180,6 +289,11 @@ public class CloudProtocol extends TcpProtocol {
         tlsCertificatePassword = getStringOption("tls.certificate.password", DEFAULT_TLS_CERTIFICATE_PASSWORD);
     }
 
+    /**
+     * Overridden. Fills a TSiConnectionsBuilder instance with the
+     * options currently used by this Cloud protocol.
+     * @param builder ConnectionsBuilder object to fill with the current options of this protocol.
+     */
     @Override
     protected void buildOptions(ConnectionsBuilder builder) {
         super.buildOptions(builder);
@@ -199,6 +313,11 @@ public class CloudProtocol extends TcpProtocol {
         builder.addOption("tls.certificate.password", tlsCertificatePassword);
     }
 
+    /**
+     * Overrides TCP header packet composition, adds cloud-specific fields,
+     * such as write key, virtual file id, custom labels.
+     * @return log header packet
+     */
     @Override
     protected LogHeader composeLogHeaderPacket() {
         LogHeader packet = super.composeLogHeaderPacket();
@@ -252,6 +371,12 @@ public class CloudProtocol extends TcpProtocol {
         return result.toString();
     }
 
+    /**
+     * Overrides TCP protocol handshake by reversing the order,
+     * for compatibility with TLS.
+     * @throws IOException
+     * @throws SmartInspectException
+     */
     @Override
     protected void doHandShake() throws IOException, SmartInspectException {
         sendClientBanner();

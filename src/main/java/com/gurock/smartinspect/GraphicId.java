@@ -1,64 +1,53 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect;
 
-// <summary>
-//   Used by the GraphicViewerContext class to specify the desired
-//   picture type.
-// </summary>
-// <threadsafety>
-//   This class is fully threadsafe.
-// </threadsafety>
-
-public final class GraphicId extends Enum
-{
+/**
+ * Used by the GraphicViewerContext class to specify the desired
+ * picture type.
+ * <p>
+ * This class is fully threadsafe.
+ */
+public final class GraphicId extends Enum {
 	private ViewerId fVi;
 
-	// <summary>
-	//   Instructs the GraphicViewerContext class to treat the data
-	//   as bitmap image.
-	// </summary>
-
+	/**
+	 * Instructs the GraphicViewerContext class to treat the data
+	 * as bitmap image.
+	 */
 	public final static GraphicId Bitmap = new GraphicId(ViewerId.Bitmap);
-	
-	// <summary>
-	//   Instructs the GraphicViewerContext class to treat the data
-	//   as JPEG image.
-	// </summary>
 
+	/**
+	 * Instructs the GraphicViewerContext class to treat the data
+	 * as JPEG image.
+	 */
 	public final static GraphicId Jpeg = new GraphicId(ViewerId.Jpeg);
-	
-	// <summary>
-	//   Instructs the GraphicViewerContext class to treat the data
-	//   as Windows icon.
-	// </summary>
 
+	/**
+	 * Instructs the GraphicViewerContext class to treat the data
+	 * as Windows icon.
+	 */
 	public final static GraphicId Icon = new GraphicId(ViewerId.Icon);
 
-	// <summary>
-	//   Instructs the GraphicViewerContext class to treat the data
-	//   as Windows Metafile image.
-	// </summary>
-
+	/**
+	 * Instructs the GraphicViewerContext class to treat the data
+	 * as Windows Metafile image.
+	 */
 	public final static GraphicId Metafile = new GraphicId(ViewerId.Metafile);
 
-	private GraphicId(ViewerId vi)
-	{
+	private GraphicId(ViewerId vi) {
 		super(vi.getIntValue());
 		this.fVi = vi;
 	}
 
-	// <summary>
-	//   Returns the related viewer ID for this object.
-	// </summary>
-	// <returns>
-	//   The related viewer ID.
-	// </returns>
-
-	protected ViewerId toViewerId()
-	{
+	/**
+	 * Returns the related viewer ID for this object.
+	 *
+	 * @return The related viewer ID.
+	 */
+	protected ViewerId toViewerId() {
 		return this.fVi;
 	}
 }

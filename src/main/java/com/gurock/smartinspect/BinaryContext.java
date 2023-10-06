@@ -22,7 +22,7 @@ public class BinaryContext extends ViewerContext
 
 	/**
 	 * Creates and initializes a BinaryContext instance.
-	 * @param vi The viewer ID to use.
+	 * @param vi The viewer ID to use
 	 */
 	public BinaryContext(ViewerId vi)
 	{
@@ -56,8 +56,8 @@ public class BinaryContext extends ViewerContext
 	/**
 	 * Loads the binary data from a file.
 	 * @param fileName The name of the file to load the binary data from.
-	 * @throws NullPointerException The fileName argument is null.
-	 * @throws IOException An I/O error occurred.
+	 * @throws NullPointerException The fileName argument is null
+	 * @throws IOException An I/O error occurred
 	 */
 	public void loadFromFile(String fileName) throws IOException
 	{
@@ -82,8 +82,8 @@ public class BinaryContext extends ViewerContext
 	/**
 	 * Loads the binary data from a stream.
 	 * @param is The stream to load the binary data from.
-	 * @throws NullPointerException The is argument is null.
-	 * @throws IOException An I/O error occurred.
+	 * @throws NullPointerException The is argument is null
+	 * @throws IOException An I/O error occurred
 	 */
 	public void loadFromStream(InputStream is) throws IOException
 	{
@@ -106,8 +106,8 @@ public class BinaryContext extends ViewerContext
 
 	/**
 	 * Overloaded. Appends a buffer.
-	 * @param b The buffer to append.
-	 * @throws NullPointerException The b argument is null.
+	 * @param b The buffer to append
+	 * @throws NullPointerException The b argument is null
 	 */
 	public void appendBytes(byte[] b)
 	{
@@ -124,12 +124,12 @@ public class BinaryContext extends ViewerContext
 	/**
 	 * Overloaded. Appends a buffer. Lets you specify the offset in
 	 * the buffer and the amount of bytes to append.
-	 * @param b The buffer to append.
-	 * @param off The offset at which to begin appending.
-	 * @param len The number of bytes to append.
+	 * @param b The buffer to append
+	 * @param off The offset at which to begin appending
+	 * @param len The number of bytes to append
 	 * @throws IndexOutOfBoundsException The sum of the off and len parameters is greater than the
-	 * actual buffer length or the off or len arguments are negative.
-	 * @throws NullPointerException The b argument is null.
+	 * actual buffer length or the off or len arguments are negative
+	 * @throws NullPointerException The b argument is null
 	 */
 	public void appendBytes(byte[] b, int off, int len)
 	{

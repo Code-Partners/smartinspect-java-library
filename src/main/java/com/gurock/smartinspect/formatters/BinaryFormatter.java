@@ -1,10 +1,9 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.formatters;
 
-import com.gurock.smartinspect.Enum;
 import com.gurock.smartinspect.packets.LogHeader;
 import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.packets.PacketType;
@@ -12,34 +11,28 @@ import com.gurock.smartinspect.packets.controlcommand.ControlCommand;
 import com.gurock.smartinspect.packets.logentry.LogEntry;
 import com.gurock.smartinspect.packets.processflow.ProcessFlow;
 import com.gurock.smartinspect.packets.watch.Watch;
-import com.gurock.smartinspect.protocols.cloud.Chunk;
+import com.gurock.smartinspect.Enum;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.logging.Logger;
 
-// <summary>
-//   Responsible for formatting and writing a packet in the standard
-//   SmartInspect binary format.
-// </summary>
-// <remarks>
-//   This class formats and writes a packet in the standard binary format
-//   which can be read by the SmartInspect Console. The compile method
-//   preprocesses a packet and computes the required size of the packet.
-//   The write method writes the preprocessed packet to the supplied
-//   stream.
-// </remarks>
-// <threadsafety>
-//   This class is not guaranteed to be threadsafe.
-// </threadsafety>
-
+/**
+ * Responsible for formatting and writing a packet in the standard
+ * SmartInspect binary format.
+ * <p>
+ * This class formats and writes a packet in the standard binary format
+ * which can be read by the SmartInspect Console. The compile method
+ * preprocesses a packet and computes the required size of the packet.
+ * The write method writes the preprocessed packet to the supplied
+ * stream.
+ * <p>
+ * This class is not guaranteed to be threadsafe.
+ */
 public class BinaryFormatter extends Formatter
 {
-	private static final Logger logger = Logger.getLogger(BinaryFormatter.class.getName());
-
 	private static final long MICROSECONDS_PER_DAY = 86400000000L;
 	private static final int DAY_OFFSET = 25569;
 	private static final int MAX_STREAM_CAPACITY = 1 * 1024 * 1024;
@@ -48,11 +41,10 @@ public class BinaryFormatter extends Formatter
 	private byte[] fBuffer;
 	private ByteArrayOutputStream fStream;
 	private Packet fPacket;
-	
-	// <summary>
-	//   Creates and initializes a BinaryFormatter instance.
-	// </summary>	
-	
+
+	/**
+	 * Creates and initializes a BinaryFormatter instance.
+	 */
 	public BinaryFormatter()
 	{
 		this.fBuffer = new byte[8];
@@ -75,20 +67,18 @@ public class BinaryFormatter extends Formatter
 			this.fStream.reset();
 		}
 	}
-	
-	// <summary>
-	//   Overridden. Preprocesses (or compiles) a packet and returns the
-	//   required size for the compiled result.
-	// </summary>
-	// <param name="packet">The packet to compile.</param>
-	// <returns>The size for the compiled result.</returns>
-	// <remarks>
-	//   This method preprocesses the supplied packet and computes the
-	//   required binary format size. To write this compiled packet,
-	//   call the write method.
-	// </remarks>
-	
-	public int compile(Packet packet) throws IOException 
+
+	/**
+	 * Overridden. Preprocesses (or compiles) a packet and returns the
+	 * required size for the compiled result.
+	 * <p>
+	 * This method preprocesses the supplied packet and computes the
+	 * required binary format size. To write this compiled packet,
+	 * call the write method.
+	 * @param packet The packet to compile
+	 * @return The size for the compiled result
+     */
+	public int compile(Packet packet) throws IOException
 	{
 		resetStream();
 		this.fPacket = packet;
@@ -115,14 +105,11 @@ public class BinaryFormatter extends Formatter
 		{
 			compileProcessFlow();
 		}
-		else if (type == PacketType.Chunk) {
-			compilePacketChunk();
-		}
 	
 		this.fSize = this.fStream.size();
 		return this.fSize + Packet.PACKET_HEADER;
 	}
-
+	
 	private final void writeTimestamp(long value) throws IOException
 	{
 		long us;
@@ -320,17 +307,7 @@ public class BinaryFormatter extends Formatter
 		writeData(title);
 		writeData(hostName);
 	}
-
-	private void compilePacketChunk() throws IOException {
-		Chunk chunk = (Chunk) this.fPacket;
-
-		writeShort(chunk.headerSize);
-		writeShort(chunk.chunkFormat);
-		writeInt(chunk.packetCount);
-		writeInt(chunk.stream.size());
-		chunk.stream.writeTo(fStream);
-	}
-
+	
 	private void compileWatch() throws IOException
 	{
 		Watch watch = (Watch) this.fPacket;
@@ -346,35 +323,24 @@ public class BinaryFormatter extends Formatter
 		writeData(name);
 		writeData(value);
 	}
-	
-	// <summary>
-	//   Overridden. Writes a previously compiled packet to the supplied
-	//   stream.
-	// </summary>
-	// <param name="stream">The stream to write the packet to.</param>
-	// <remarks>
-	//   This method writes the previously compiled packet (see Compile)
-	//   to the supplied stream object. If the return value of the
-	//   compile method was 0, nothing is written.
-	// </remarks>
-	// <exception>
-	// <table>
-	//   Exception Type          Condition
-	//   -                       -
-	//   IOException             An I/O error occurred while trying
-	//                             to write the compiled packet.
-	// </table>
-	// </exception>
-	
+
+	/**
+	 * Overridden. Writes a previously compiled packet to the supplied
+	 * stream.
+	 * <p>
+	 * This method writes the previously compiled packet (see Compile)
+	 * to the supplied stream object. If the return value of the
+	 * compile method was 0, nothing is written.
+	 * @param stream The stream to write the packet to
+	 * @throws IOException An I/O error occurred while trying
+	 * to write the compiled packet.
+	 */
 	public void write(OutputStream stream) throws IOException
 	{
 		if (this.fSize > 0)
 		{
 			writeShort(stream, 
 				(short) this.fPacket.getPacketType().getIntValue());
-
-			logger.fine("body size = " + fSize);
-
 			writeInt(stream, this.fSize);
 			this.fStream.writeTo(stream);
 		}

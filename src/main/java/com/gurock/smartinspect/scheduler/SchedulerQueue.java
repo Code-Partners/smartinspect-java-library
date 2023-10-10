@@ -1,28 +1,23 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.scheduler;
 
-// <summary>
-//   Manages a queue of scheduler commands.
-// </summary>
-// <remarks>
-//   This class is responsible for managing a queue of scheduler
-//   commands. This functionality is needed by the
-//   <link Protocol.isValidOption, asynchronous protocol mode>
-//   and the Scheduler class. New commands can be added with the
-//   enqueue method. Commands can be dequeued with dequeue. This
-//   queue does not have a maximum size or count.
-// </remarks>
-// <threadsafety>
-//   This class is not guaranteed to be threadsafe.
-// </threadsafety>
-
 import java.util.logging.Logger;
 
-public class SchedulerQueue
-{
+/**
+ * Manages a queue of scheduler commands.
+ * <p>
+ * This class is responsible for managing a queue of scheduler
+ * commands. This functionality is needed by the asynchronous protocol mode
+ * and the Scheduler class. New commands can be added with the
+ * enqueue method. Commands can be dequeued with dequeue. This
+ * queue does not have a maximum size or count.
+ * <p>
+ * This class is not guaranteed to be thread-safe.
+ */
+public class SchedulerQueue {
 	public static final Logger logger = Logger.getLogger(SchedulerQueue.class.getName());
 
 	public enum QueueEnd {
@@ -35,26 +30,23 @@ public class SchedulerQueue
 	private SchedulerQueueItem fHead;
 	private SchedulerQueueItem fTail;
 
-	class SchedulerQueueItem
-	{
+	class SchedulerQueueItem {
 		public SchedulerCommand command;
 		public SchedulerQueueItem next;
 		public SchedulerQueueItem previous;
 	}
-	
-	// <summary>
-	//   Adds a new scheduler command to the queue.
-	// </summary>
-	// <param name="command">The command to add.</param>
-	// <remarks>
-	//   This method adds the supplied scheduler command to the queue.
-	//   The <link getSize, size> of the queue is incremented by the
-	//   size of the supplied command (plus some internal management
-	//   overhead). This queue does not have a maximum size or count.
-	// </remarks>
 
-	public void enqueue(SchedulerCommand command, QueueEnd insertTo)
-	{
+	/**
+	 * Adds a new scheduler command to the queue.
+	 * <p>
+	 * This method adds the supplied scheduler command to the queue.
+	 * The size of the queue is incremented by the
+	 * size of the supplied command (plus some internal management
+	 * overhead). This queue does not have a maximum size or count.
+	 *
+	 * @param command The command to add
+	 */
+	public void enqueue(SchedulerCommand command, QueueEnd insertTo) {
 		SchedulerQueueItem item = new SchedulerQueueItem();
 		item.command = command;
 
@@ -67,15 +59,11 @@ public class SchedulerQueue
 		logger.fine("Item added, queue size = " + getSize() + " bytes");
 	}
 
-	private void addToQueueTail(SchedulerQueueItem item)
-	{
-		if (this.fTail == null)
-		{
+	private void addToQueueTail(SchedulerQueueItem item) {
+		if (this.fTail == null) {
 			this.fTail = item;
 			this.fHead = item;
-		}
-		else
-		{
+		} else {
 			this.fTail.next = item;
 			item.previous = this.fTail;
 			this.fTail = item;
@@ -85,15 +73,11 @@ public class SchedulerQueue
 		this.fSize += item.command.getSize() + OVERHEAD;
 	}
 
-	private void insertToQueueHead(SchedulerQueueItem item)
-	{
-		if (this.fTail == null)
-		{
+	private void insertToQueueHead(SchedulerQueueItem item) {
+		if (this.fTail == null) {
 			this.fTail = item;
 			this.fHead = item;
-		}
-		else
-		{
+		} else {
 			SchedulerQueueItem previousHead = fHead;
 
 			fHead = item;
@@ -104,60 +88,41 @@ public class SchedulerQueue
 		this.fCount++;
 		this.fSize += item.command.getSize() + OVERHEAD;
 	}
-	
-	// <summary>
-	//   Returns a scheduler command and removes it from the queue.
-	// </summary>
-	// <returns>
-	//   The removed scheduler command or null if the queue does not
-	//   contain any packets.
-	// </returns>
-	// <remarks>
-	//   If the queue is not empty, this method removes the oldest
-	//   scheduler command from the queue (also known as FIFO) and
-	//   returns it. The total <link getSize, size> of the queue is
-	//   decremented by the size of the returned command (plus some
-	//   internal management overhead).
-	// </remarks>
 
-	public SchedulerCommand dequeue()
-	{
+	/**
+	 * Returns a scheduler command and removes it from the queue.
+	 * If the queue is not empty, this method removes the oldest
+	 * scheduler command from the queue (also known as FIFO) and
+	 * returns it. The total size of the queue is
+	 * decremented by the size of the returned command (plus some
+	 * internal management overhead).
+	 *
+	 * @return The removed scheduler command or null if the queue does not contain any packets
+	 */
+	public SchedulerCommand dequeue() {
 		SchedulerQueueItem item = this.fHead;
 
-		if (item != null)
-		{
+		if (item != null) {
 			remove(item);
 			return item.command;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	private void remove(SchedulerQueueItem item)
-	{
-		if (item == this.fHead) /* Head */
-		{
+	private void remove(SchedulerQueueItem item) {
+		if (item == this.fHead) /* Head */ {
 			this.fHead = item.next;
-			if (this.fHead != null)
-			{
+			if (this.fHead != null) {
 				this.fHead.previous = null;
-			}
-			else /* Was also tail */
-			{
+			} else /* Was also tail */ {
 				this.fTail = null;
 			}
-		}
-		else 
-		{
+		} else {
 			item.previous.next = item.next;
-			if (item.next == null) /* Tail */
-			{
+			if (item.next == null) /* Tail */ {
 				this.fTail = item.previous;
-			}
-			else 
-			{
+			} else {
 				item.next.previous = item.previous;
 			}
 		}
@@ -165,46 +130,32 @@ public class SchedulerQueue
 		this.fCount--;
 		this.fSize -= item.command.getSize() + OVERHEAD;
 	}
-	
-	// <summary>
-	//   Tries to skip and remove scheduler commands from this queue.
-	// </summary>
-	// <param name="size">
-	//   The minimum amount of bytes to remove from this queue.
-	// </param>
-	// <returns>
-	//   True if enough scheduler commands could be removed and false
-	//   otherwise.
-	// </returns>
-	// <remarks>
-	//   This method removes the next WritePacket scheduler commands
-	//   from this queue until the specified minimum amount of bytes
-	//   has been removed. Administrative scheduler commands (connect,
-	//   disconnect or dispatch) are not removed. If the queue is
-	//   currently empty or does not contain enough WritePacket
-	//   commands to achieve the specified minimum amount of bytes,
-	//   this method returns false.
-	// </remarks>
 
-	public boolean trim(int size)
-	{
-		if (size <= 0)
-		{
+	/**
+	 * Tries to skip and remove scheduler commands from this queue.
+	 * This method removes the next WritePacket scheduler commands from this queue
+	 * until the specified minimum amount of bytes has been removed.
+	 * Administrative scheduler commands (connect, disconnect or dispatch) are not removed.
+	 * If the queue is currently empty or does not contain enough WritePacket
+	 * commands to achieve the specified minimum amount of bytes, this method returns false.
+	 *
+	 * @param size The minimum amount of bytes to remove from this queue
+	 * @return True if enough scheduler commands could be removed and false otherwise
+	 */
+	public boolean trim(int size) {
+		if (size <= 0) {
 			return true;
 		}
 
 		int removedBytes = 0;
 		SchedulerQueueItem item = this.fHead;
 
-		while (item != null)
-		{
-			if (item.command.getAction() == SchedulerAction.WritePacket)
-			{
+		while (item != null) {
+			if (item.command.getAction() == SchedulerAction.WritePacket) {
 				removedBytes += item.command.getSize() + OVERHEAD;
 				remove(item);
 
-				if (removedBytes >= size)
-				{
+				if (removedBytes >= size) {
 					logger.fine(removedBytes + " bytes trimmed");
 
 					return true;
@@ -216,54 +167,44 @@ public class SchedulerQueue
 
 		return false;
 	}
-	
-	// <summary>
-	//   Removes all scheduler commands from this queue.
-	// </summary>
-	// <remarks>
-	//   Removing all scheduler commands of the queue is done by
-	//   calling the dequeue method for each command in the current
-	//   queue.
-	// </remarks>
 
-	public void clear()
-	{
+	/**
+	 * Removes all scheduler commands from this queue.
+	 * <p>
+	 * Removing all scheduler commands of the queue is done by
+	 * calling the dequeue method for each command in the current
+	 * queue
+	 */
+	public void clear() {
 		while (dequeue() != null) ;
 	}
-	
-	// <summary>
-	//   Returns the current amount of scheduler commands in this
-	//   queue.
-	// </summary>
-	// <returns>
-	//   The current amount of scheduler commands in this queue.
-	// </returns>
-	// <remarks>
-	//   For each added scheduler command this counter is incremented
-	//   by one and for each removed command (with dequeue) this
-	//   counter is decremented by one. If the queue is empty, this
-	//   method returns 0.
-	// </remarks>
 
-	public int getCount()
-	{
+	/**
+	 * Returns the current amount of scheduler commands in this queue.
+	 * <p>
+	 * For each added scheduler command this counter is incremented
+	 * by one and for each removed command (with dequeue) this
+	 * counter is decremented by one. If the queue is empty, this
+	 * method returns 0.
+	 *
+	 * @return The current amount of scheduler commands in this queue
+	 */
+	public int getCount() {
 		return this.fCount;
 	}
 
-	// <summary>
-	//   Returns the current size of this queue in bytes.
-	// </summary>
-	// <returns>The current size of this queue in bytes.</returns>
-	// <remarks>
-	//   For each added scheduler command this counter is incremented
-	//   by the size of the command (plus some internal management
-	//   overhead) and for each removed command (with dequeue) this
-	//   counter is then decremented again. If the queue is empty,
-	//   this method returns 0.
-	// </remarks>
-
-	public long getSize()
-	{
+	/**
+	 * Returns the current size of this queue in bytes.
+	 * <p>
+	 * For each added scheduler command this counter is incremented
+	 * by the size of the command (plus some internal management
+	 * overhead) and for each removed command (with dequeue) this
+	 * counter is then decremented again. If the queue is empty,
+	 * this method returns 0.
+	 *
+	 * @return The current size of this queue in bytes
+	 */
+	public long getSize() {
 		return this.fSize;
 	}
 }

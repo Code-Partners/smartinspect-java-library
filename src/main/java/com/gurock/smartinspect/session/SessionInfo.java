@@ -1,6 +1,6 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.session;
 
@@ -8,8 +8,7 @@ import com.gurock.smartinspect.Level;
 
 import java.awt.*;
 
-class SessionInfo
-{
+class SessionInfo {
 	public String name;
 	public Level level;
 	public boolean hasLevel;

@@ -1,6 +1,6 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.session;
 
@@ -8,142 +8,102 @@ import com.gurock.smartinspect.Level;
 
 import java.awt.*;
 
-// <summary>
-//   Specifies the default property values for newly created sessions.
-// </summary>
-// <remarks>
-//   This class is used by the SmartInspect class to customize the
-//   default property values for newly created sessions. Sessions
-//   that will be created by or passed to the addSession method of
-//   the SmartInspect class will be automatically configured with
-//   the values of the session defaults object as returned by the
-//   SmartInspect.getSessionDefaults method.
-// </remarks>
-// <threadsafety>
-//   This class is guaranteed to be threadsafe.
-// </threadsafety>
-
-public class SessionDefaults
-{
+/**
+ * Specifies the default property values for newly created sessions.
+ * <p>
+ * This class is used by the SmartInspect class to customize the
+ * default property values for newly created sessions. Sessions
+ * that will be created by or passed to the addSession method of
+ * the SmartInspect class will be automatically configured with
+ * the values of the session defaults object as returned by the
+ * SmartInspect.getSessionDefaults method.
+ * <p>
+ * This class is guaranteed to be threadsafe.
+ */
+public class SessionDefaults {
 	private boolean fActive;
 	private Color fColor;
 	private Level fLevel;
-	
-	// <summary>
-	//   Creates and initializes a new SessionDefaults instance.
-	// </summary>
-	
-	public SessionDefaults()
-	{
+
+	/**
+	 * Creates and initializes a new SessionDefaults instance.
+	 */
+	public SessionDefaults() {
 		this.fActive = true;
 		this.fColor = Session.DEFAULT_COLOR;
 		this.fLevel = Level.Debug;
 	}
-	
-	// <summary>
-	//   Returns the default active status for newly created sessions.
-	// </summary>
-	// <returns>
-	//  The default active status for newly created sessions.
-	// </returns>
-	// <remarks>
-	//   Please see Session.setActive method for general information
-	//   about the active status of sessions.
-	// </remarks>
-	
-	public boolean isActive()
-	{
+
+	/**
+	 * Returns the default active status for newly created sessions.
+	 * <p>
+	 * Please see Session.setActive method for general information
+	 * about the active status of sessions.
+	 *
+	 * @return The default active status for newly created sessions
+	 */
+	public boolean isActive() {
 		return this.fActive;
 	}
-	
-	// <summary>
-	//   Sets the default active status for newly created sessions.
-	// </summary>
-	// <param name="active">
-	//   The new default active status for newly created sessions.
-	// </active>
-	// <remarks>
-	//   Please see Session.setActive method for general information
-	//   about the active status of sessions.
-	// </remarks>
 
-	public void setActive(boolean active)
-	{
+	/**
+	 * Sets the default active status for newly created sessions.
+	 * <p>
+	 * Please see Session.setActive method for general information
+	 * about the active status of sessions.
+	 *
+	 * @param active The new default active status for newly created sessions
+	 */
+	public void setActive(boolean active) {
 		this.fActive = active;
 	}
-	
-	// <summary>
-	//   Returns the default color for newly created sessions.
-	// </summary>
-	// <returns>
-	//  The default color for newly created sessions.
-	// </returns>
-	// <remarks>
-	//   Please see Session.setColor method for general information
-	//   about the background color of sessions.
-	// </remarks>
-	
-	public Color getColor()
-	{
+
+	/**
+	 * Returns the default color for newly created sessions.
+	 * Please see Session.setColor method for general information about the background color of sessions.
+	 *
+	 * @return The default color for newly created sessions
+	 */
+	public Color getColor() {
 		return this.fColor;
 	}
-	
-	// <summary>
-	//   Sets the default color for newly created sessions.
-	// </summary>
-	// <param name="color">
-	//   The new default color for newly created sessions.
-	// </active>
-	// <remarks>
-	//   Please see Session.setColor method for general information
-	//   about the background color of sessions.
-	// </remarks>
-	
-	public void setColor(Color color)
-	{
-		if (color != null)
-		{
+
+	/**
+	 * Sets the default color for newly created sessions.
+	 * Please see Session.setColor method for general information about the background color of sessions.
+	 *
+	 * @param color The new default color for newly created sessions
+	 */
+	public void setColor(Color color) {
+		if (color != null) {
 			this.fColor = color;
-		}		
+		}
 	}
-	
-	// <summary>
-	//   Returns the default log level for newly created sessions.
-	// </summary>
-	// <returns>
-	//  The default log level for newly created sessions.
-	// </returns>
-	// <remarks>
-	//   Please see Session.setLevel method for general information
-	//   about the log level of sessions.
-	// </remarks>
-	
-	public Level getLevel()
-	{
+
+	/**
+	 * Returns the default log level for newly created sessions.
+	 * <p>
+	 * Please see Session.setLevel method for general information about the log level of sessions.
+	 *
+	 * @return The default log level for newly created sessions
+	 */
+	public Level getLevel() {
 		return this.fLevel;
 	}
-	
-	// <summary>
-	//   Sets the default log level for newly created sessions.
-	// </summary>
-	// <param name="level">
-	//   The new default log level for newly created sessions.
-	// </active>
-	// <remarks>
-	//   Please see Session.setLevel method for general information
-	//   about the log level of sessions.
-	// </remarks>
-	
-	public void setLevel(Level level)
-	{
-		if (level != null)		
-		{
+
+	/**
+	 * Sets the default log level for newly created sessions.
+	 * Please see Session.setLevel method for general information about the log level of sessions.
+	 *
+	 * @param level The new default log level for newly created sessions
+	 */
+	public void setLevel(Level level) {
+		if (level != null) {
 			this.fLevel = level;
 		}
 	}
-	
-	protected void assign(Session session)
-	{
+
+	protected void assign(Session session) {
 		session.setActive(this.fActive);
 		session.setColor(this.fColor);
 		session.setLevel(this.fLevel);

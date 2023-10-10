@@ -10,8 +10,8 @@ import com.gurock.smartinspect.ViewerId;
  * Represents the binary viewer in the Console which can display binary
  * data in a read-only hex editor.
  * <p>
- * The binary viewer in the Console interprets the <link LogEntry.getData,
- * data of a Log Entry> as binary data and displays it in a read-only
+ * The binary viewer in the Console interprets the {@link LogEntry#getData}
+ * as binary data and displays it in a read-only
  * hex editor.
  * <p>
  * You can use the BinaryViewerContext class for creating custom log
@@ -20,13 +20,11 @@ import com.gurock.smartinspect.ViewerId;
  * <p>
  * This class is not guaranteed to be threadsafe.
  */
-public class BinaryViewerContext extends BinaryContext
-{
+public class BinaryViewerContext extends BinaryContext {
 	/**
 	 * Creates and initializes a BinaryViewerContext instance.
 	 */
-	public BinaryViewerContext()
-	{
+	public BinaryViewerContext() {
 		super(ViewerId.Binary);
 	}
 }

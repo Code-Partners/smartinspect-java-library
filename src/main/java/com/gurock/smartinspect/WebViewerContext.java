@@ -1,30 +1,23 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect;
 
-// <summary>
-//   Represents the web viewer in the Console which can display HTML
-//   text content as web pages.
-// </summary>
-// <remarks>
-//   The web viewer in the Console interprets the <link LogEntry.getData,
-//   data of a Log Entry> as an HTML website.
-// </remarks>
-// <threadsafety>
-//   This class is not guaranteed to be threadsafe.
-// </threadsafety>
-
-public class WebViewerContext extends TextContext
-{
-
-	// <summary>
-	//   Creates and initializes a WebViewerContext instance.
-	// </summary>
-
-	public WebViewerContext()
-	{
+/**
+ * Represents the web viewer in the Console which can display HTML
+ * text content as web pages.
+ *
+ * <p>The web viewer in the Console interprets the <a href="LogEntry.getData">
+ * data of a Log Entry</a> as an HTML website.
+ *
+ * <p><b>Note:</b> This class is not guaranteed to be threadsafe.
+ */
+public class WebViewerContext extends TextContext {
+	/**
+	 * Creates and initializes a WebViewerContext instance.
+	 */
+	public WebViewerContext() {
 		super(ViewerId.Web);
 	}
 }

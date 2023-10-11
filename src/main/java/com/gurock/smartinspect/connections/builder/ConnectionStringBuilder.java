@@ -2,89 +2,79 @@ package com.gurock.smartinspect.connections.builder;
 
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
 
-// <summary>
-//   Class for convenient composition of the connection string.
-//   Employs fluent interface pattern.
-// </summary>
-// <example>
-// TCP protocol:
-// <code>
-// si.setConnections(
-//     (new ConnectionStringBuilder()).addTcpProtocol()
-//         .setHost("localhost")
-//         .setReconnect(true)
-//         .and().build()
-// );
-// </code>
-//
-// File protocol:
-// <code>
-// si.setConnections(
-//     (new ConnectionStringBuilder()).addFileProtocol()
-//         .setFilename("log.sil")
-//         .and().build()
-// );
-// </code>
-// </example>
-
+/**
+ * Class for convenient composition of the connection string.
+ * Employs fluent interface pattern.
+ * <p>
+ * Examples:
+ * <pre>
+ * // TCP protocol:
+ * si.setConnections(
+ *     (new ConnectionStringBuilder()).addTcpProtocol()
+ *         .setHost("localhost")
+ *         .setReconnect(true)
+ *         .and().build()
+ * );
+ *
+ * // File protocol:
+ * si.setConnections(
+ *     (new ConnectionStringBuilder()).addFileProtocol()
+ *         .setFilename("log.sil")
+ *         .and().build()
+ * );
+ * </pre>
+ */
 public class ConnectionStringBuilder {
-    protected ConnectionsBuilder cb = new ConnectionsBuilder();
+	protected ConnectionsBuilder cb = new ConnectionsBuilder();
 
-    // <summary>
-    //   Adds Pipe protocol, returns PipeProtocolConnectionStringBuilder
-    //   instance with property setters.
-    // </summary>
+	/**
+	 * Adds Pipe protocol, returns PipeProtocolConnectionStringBuilder instance with property setters.
+	 */
+	public PipeProtocolConnectionStringBuilder addPipeProtocol() {
+		cb.beginProtocol("pipe");
+		return new PipeProtocolConnectionStringBuilder(this);
+	}
 
-    public PipeProtocolConnectionStringBuilder addPipeProtocol() {
-        cb.beginProtocol("pipe");
-        return new PipeProtocolConnectionStringBuilder(this);
-    }
+	/**
+	 * Adds File protocol, returns FileProtocolConnectionStringBuilder
+	 * instance with property setters.
+	 */
+	public FileProtocolConnectionStringBuilder addFileProtocol() {
+		cb.beginProtocol("file");
+		return new FileProtocolConnectionStringBuilder(this);
+	}
 
-    // <summary>
-    //   Adds File protocol, returns FileProtocolConnectionStringBuilder
-    //   instance with property setters.
-    // </summary>
+	/**
+	 * Adds Memory protocol. Returns a MemoryProtocolConnectionStringBuilder
+	 * instance with property setters.
+	 */
+	public MemoryProtocolConnectionStringBuilder addMemoryProtocol() {
+		cb.beginProtocol("mem");
+		return new MemoryProtocolConnectionStringBuilder(this);
+	}
 
-    public FileProtocolConnectionStringBuilder addFileProtocol() {
-        cb.beginProtocol("file");
-        return new FileProtocolConnectionStringBuilder(this);
-    }
+	/**
+	 * Adds Tcp protocol, returns TcpProtocolConnectionStringBuilder
+	 * instance with property setters.
+	 */
+	public TcpProtocolConnectionStringBuilder addTcpProtocol() {
+		cb.beginProtocol("tcp");
+		return new TcpProtocolConnectionStringBuilder(this);
+	}
 
-    // <summary>
-    //   Adds Memory protocol, returns MemoryProtocolConnectionStringBuilder
-    //   instance with property setters.
-    // </summary>
+	/**
+	 * Adds Text protocol, returns TextProtocolConnectionStringBuilder
+	 * instance with property setters.
+	 */
+	public TextProtocolConnectionStringBuilder addTextProtocol() {
+		cb.beginProtocol("text");
+		return new TextProtocolConnectionStringBuilder(this);
+	}
 
-    public MemoryProtocolConnectionStringBuilder addMemoryProtocol() {
-        cb.beginProtocol("mem");
-        return new MemoryProtocolConnectionStringBuilder(this);
-    }
-
-    // <summary>
-    //   Adds Tcp protocol, returns TcpProtocolConnectionStringBuilder
-    //   instance with property setters.
-    // </summary>
-
-    public TcpProtocolConnectionStringBuilder addTcpProtocol() {
-        cb.beginProtocol("tcp");
-        return new TcpProtocolConnectionStringBuilder(this);
-    }
-
-    // <summary>
-    //   Adds Text protocol, returns TextProtocolConnectionStringBuilder
-    //   instance with property setters.
-    // </summary>
-
-    public TextProtocolConnectionStringBuilder addTextProtocol() {
-        cb.beginProtocol("text");
-        return new TextProtocolConnectionStringBuilder(this);
-    }
-
-    // <summary>
-    //   Builds the resulting connection string.
-    // </summary>
-
-    public String build() {
-        return cb.getConnections();
-    }
+	/**
+	 * Builds the resulting connection string.
+	 */
+	public String build() {
+		return cb.getConnections();
+	}
 }

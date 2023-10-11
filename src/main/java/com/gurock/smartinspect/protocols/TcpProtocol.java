@@ -1,6 +1,6 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.protocols;
 
@@ -14,36 +14,30 @@ import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.packets.logentry.LogEntry;
 
 import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
+import java.io.InputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
-// <summary>
-//   Used for sending packets to the SmartInspect Console over a TCP
-//   socket connection.
-// </summary>
-// <remarks>
-//   This class is used for sending packets over a TCP connection to
-//   the Console. It is used when the 'tcp' protocol is specified in
-//   the <link SmartInspect.setConnections, connections string>.
-//   Please see the isValidOption method for a list of available
-//   protocol options.
-// </remarks>
-// <threadsafety>
-//   The public members of this class are threadsafe.
-// </threadsafety>
-
-public class TcpProtocol extends Protocol
-{
+/**
+ * Used for sending packets to the SmartInspect Console over a TCP socket connection.
+ * <p>
+ * This class is used for sending packets over a TCP connection to the Console.
+ * It is used when the 'tcp' protocol is specified in the {@link SmartInspect#setConnections} connections string.
+ * Please see the isValidOption method for a list of available protocol options.
+ * <p>
+ * Thread Safety:
+ * The public members of this class are threadsafe.
+ */
+public class TcpProtocol extends Protocol {
 	private static final Logger logger = Logger.getLogger(TcpProtocol.class.getName());
 
 	private static final int BUFFER_SIZE = 0x2000;
 	private static final byte[] CLIENT_BANNER =
-		("SmartInspect Java Library v" + SmartInspect.getVersion() +
-		"\n").getBytes();
+			("SmartInspect Java Library v" + SmartInspect.getVersion() +
+					"\n").getBytes();
 
 	private static final int ANSWER_BUFFER_SIZE = 0x2000;
 
@@ -57,110 +51,105 @@ public class TcpProtocol extends Protocol
 	protected int fTimeout = 30000;
 	protected int fPort = 4228;
 
-	// <summary>
-	//   Creates and initializes a TcpProtocol instance. For a list of
-	//   available TCP protocol options, please refer to the isValidOption
-	//   method.
-	// </summary>
-	
-	public TcpProtocol()
-	{
+	/**
+	 * Creates and initializes a TcpProtocol instance. For a list of
+	 * available TCP protocol options, please refer to the isValidOption
+	 * method.
+	 */
+	public TcpProtocol() {
 		this.fAnswer = new byte[ANSWER_BUFFER_SIZE];
 		this.fFormatter = new BinaryFormatter();
 		loadOptions(); // Set default options
 	}
-	
-	// <summary>
-	//   Overridden. Returns "tcp".
-	// </summary>
-	// <returns>Just "tcp".</returns>
 
-	protected String getName()
-	{
+	/**
+	 * Overridden. Returns "tcp".
+	 *
+	 * @return Just "tcp"
+	 */
+	protected String getName() {
 		return "tcp";
 	}
 
-	// <summary>
-	//   Overridden. Validates if a protocol option is supported.
-	// </summary>
-	// <param name="name">The option name to validate.</param>
-	// <returns>
-	//   True if the option is supported and false otherwise.
-	// </returns>
-	// <remarks>
-	//   The following table lists all valid options, their default values
-	//   and descriptions for the TCP protocol.
-	//
-	//   <table>
-	//   Valid Options  Default Value  Description
-	//   -              -              -
-	//   host           "127.0.0.1"    Specifies the hostname where
-	//                                   the Console is running.
-	//
-	//   port           4228           Specifies the Console port.
-	//
-	//   timeout        30000          Specifies the connect, receive and
-	//                                   send timeout in milliseconds.
-	//   </table>
-	// </remarks>
-	//
-	//   For further options which affect the behavior of this protocol,
-	//   please have a look at the documentation of the
-	//   <link Protocol.isValidOption, isValidOption> method of the
-	//   parent class.
-	// <example>
-	// <code>
-	// SiAuto.si.setConnections("tcp()");
-	// SiAuto.si.setConnections("tcp(host=\\"localhost\\", port=4229)");
-	// SiAuto.si.setConnections("tcp(timeout=2500)");
-	// </code>
-	// </example>
-
-	protected boolean isValidOption(String name)
-	{
-		return 
-			name.equals("host") ||
-			name.equals("port") ||
-			name.equals("timeout") ||
-			super.isValidOption(name);
+	/**
+	 * Validates if a protocol option is supported. Overridden method.
+	 * <p>
+	 * The following table lists all valid options, their default values and descriptions for the TCP protocol:
+	 *
+	 * <table border="1">
+	 *     <thead>
+	 *         <tr>
+	 *             <th>Valid Options</th>
+	 *             <th>Default Value</th>
+	 *             <th>Description</th>
+	 *         </tr>
+	 *     </thead>
+	 *     <tbody>
+	 *         <tr>
+	 *             <td>host</td>
+	 *             <td>"127.0.0.1"</td>
+	 *             <td>Specifies the hostname where the Console is running</td>
+	 *         </tr>
+	 *         <tr>
+	 *             <td>port</td>
+	 *             <td>4228</td>
+	 *             <td>Specifies the Console port</td>
+	 *         </tr>
+	 *         <tr>
+	 *             <td>timeout</td>
+	 *             <td>30000</td>
+	 *             <td>Specifies the connect, receive and send timeout in milliseconds</td>
+	 *         </tr>
+	 *     </tbody>
+	 * </table>
+	 * <p>
+	 * For further options which affect the behavior of this protocol, please have a look at the documentation of the Protocol.isValidOption method of the parent class.
+	 * <h3>Example:</h3>
+	 * <pre>
+	 * SiAuto.si.setConnections("tcp()");
+	 * SiAuto.si.setConnections("tcp(host=\\"localhost\\", port=4229)");
+	 * SiAuto.si.setConnections("tcp(timeout=2500)");
+	 * </pre>
+	 *
+	 * @param name The option name to validate
+	 * @return True if the option is supported and false otherwise
+	 */
+	protected boolean isValidOption(String name) {
+		return
+				name.equals("host") ||
+						name.equals("port") ||
+						name.equals("timeout") ||
+						super.isValidOption(name);
 	}
 
-	// <summary>
-	//   Overridden. Fills a ConnectionsBuilder instance with the
-	//   options currently used by this TCP protocol.
-	// </summary>
-	// <param name="builder">
-	//   The ConnectionsBuilder object to fill with the current options
-	//   of this protocol.
-	// </param>
-
-	protected void buildOptions(ConnectionsBuilder builder)
-	{
+	/**
+	 * Overridden. Fills a ConnectionsBuilder instance with the
+	 * options currently used by this TCP protocol.
+	 *
+	 * @param builder The ConnectionsBuilder object to fill with the current options
+	 *                of this protocol
+	 */
+	protected void buildOptions(ConnectionsBuilder builder) {
 		super.buildOptions(builder);
 		builder.addOption("host", this.fHostName);
 		builder.addOption("port", this.fPort);
 		builder.addOption("timeout", this.fTimeout);
 	}
-	
-	// <summary>
-	//   Overridden. Loads and inspects TCP specific options.
-	// </summary>
-	// <remarks>
-	//   This method loads all relevant options and ensures their
-	//   correctness. See isValidOption for a list of options which
-	//   are recognized by the TCP protocol.
-	// </remarks>
 
-	protected void loadOptions()
-	{
+	/**
+	 * Overridden. Loads and inspects TCP specific options.
+	 * <p>
+	 * This method loads all relevant options and ensures their correctness.
+	 * See isValidOption for a list of options which are recognized by the TCP protocol
+	 */
+	protected void loadOptions() {
 		super.loadOptions();
 		this.fHostName = getStringOption("host", "127.0.0.1");
 		this.fTimeout = getIntegerOption("timeout", 30000);
 		this.fPort = getIntegerOption("port", 4228);
 	}
 
-	protected void doHandShake() throws IOException, SmartInspectException
-	{
+	protected void doHandShake() throws IOException, SmartInspectException {
 		readServerBanner();
 		sendClientBanner();
 	}
@@ -169,10 +158,8 @@ public class TcpProtocol extends Protocol
 		int n;
 
 		// Read the server banner from the Console.
-		while ( (n = fIstream.read()) != '\n')
-		{
-			if (n == -1)
-			{
+		while ((n = fIstream.read()) != '\n') {
+			if (n == -1) {
 				// This indicates a failure on the server
 				// side. Doesn't make sense to proceed here.
 
@@ -190,34 +177,24 @@ public class TcpProtocol extends Protocol
 		fOstream.flush();
 	}
 
-	// <summary>
-	//   Overridden. Creates and connects a TCP socket.
-	// </summary>
-	// <remarks>
-	//   This method tries to connect a TCP socket to a SmartInspect
-	//   Console. The hostname and port can be specified by passing
-	//   the "hostname" and "port" options to the initialize method.
-	//   Furthermore, it is possible to specify the connect timeout
-	//   by using the "timeout" option.
-	// </remarks>
-	// <exception>
-	// <table>
-	//   Exception Type       Condition
-	//   -                    -
-	//   Exception            Creating or connecting the socket failed.
-	// </table>
-	// </exception>
-
-	protected void internalConnect() throws Exception
-	{
+	/**
+	 * Overridden. Creates and connects a TCP socket.
+	 * This method tries to connect a TCP socket to a SmartInspect
+	 * Console. The hostname and port can be specified by passing
+	 * the "hostname" and "port" options to the initialize method.
+	 * Furthermore, it is possible to specify the connect timeout
+	 * by using the "timeout" option.
+	 *
+	 * @throws Exception if creating or connecting the socket failed
+	 */
+	protected void internalConnect() throws Exception {
 		this.fSocket = internalInitializeSocket();
 
-		if (this.fSocket.isConnected())
-		{
+		if (this.fSocket.isConnected()) {
 			this.fIstream = this.fSocket.getInputStream();
 			this.fOstream = new BufferedOutputStream(
 					this.fSocket.getOutputStream(), BUFFER_SIZE
-				);
+			);
 
 			doHandShake();
 			internalWriteLogHeader(); /* Write the log header */
@@ -239,38 +216,16 @@ public class TcpProtocol extends Protocol
 		return socket;
 	}
 
-	// <summary>
-	//   Overridden. Sends a packet to the Console.
-	// </summary>
-	// <param name="packet">The packet to write.</param>
-	// <remarks>
-	//   This method sends the supplied packet to the SmartInspect
-	//   Console and waits for a valid response.
-	// </remarks>
-	// <exception>
-	// <table>
-	//   Exception Type       Condition
-	//   -                    -
-	//   Exception            Sending the packet to the Console failed.
-	// </table>
-	// </exception>
-
-	protected void internalWritePacket(Packet packet) throws Exception
-	{
-		logger.fine(
-				"packet = " + packet + ", type = " + packet.getPacketType()
-				+ ", " + packet.getPacketType().getIntValue()
-//				+ ", " + packet.getSize()
-		);
-
-		if (packet instanceof LogEntry) {
-			String title = ((LogEntry) packet).getTitle();
-			logger.fine("title = " + title);
-		} else if (packet instanceof LogHeader) {
-			String title = ((LogHeader) packet).getContent();
-			logger.fine("title = " + title);
-		}
-
+	/**
+	 * Overridden. Sends a packet to the Console.
+	 * <p>
+	 * This method sends the supplied packet to the SmartInspect
+	 * Console and waits for a valid response.
+	 *
+	 * @param packet The packet to write
+	 * @throws Exception If sending the packet to the Console failed
+	 */
+	protected void internalWritePacket(Packet packet) throws Exception {
 		this.fFormatter.format(packet, this.fOstream);
 
 		this.fOstream.flush();
@@ -283,8 +238,7 @@ public class TcpProtocol extends Protocol
 
 	protected void internalValidateWritePacketAnswer(int bytesRead, byte[] answerBytes) throws Exception {
 		// 2 bytes for OK
-		if (bytesRead != 2)
-		{
+		if (bytesRead != 2) {
 			throw new SmartInspectException(
 					"Could not read server answer correctly: " +
 							"Connection has been closed unexpectedly"
@@ -292,55 +246,35 @@ public class TcpProtocol extends Protocol
 		}
 	}
 
-	// <summary>
-	//   Overridden. Closes the TCP socket connection.
-	// </summary>
-	// <remarks>
-	//   This method closes the underlying socket handle if previously
-	//   created and disposes any supplemental objects.
-	// </remarks>
-	// <exception>
-	// <table>
-	//   Exception Type       Condition
-	//   -                    -
-	//   Exception            Closing the TCP socket failed.
-	// </table>
-	// </exception>
-
-	protected void internalDisconnect() throws Exception
-	{
-		if (this.fIstream != null)
-		{
-			try 
-			{
+	/**
+	 * Overridden. Closes the TCP socket connection.
+	 * <p>
+	 * This method closes the underlying socket handle if previously
+	 * created and disposes any supplemental objects.
+	 *
+	 * @throws Exception If Closing the TCP socket failed
+	 */
+	protected void internalDisconnect() throws Exception {
+		if (this.fIstream != null) {
+			try {
 				this.fIstream.close();
-			}
-			finally
-			{
+			} finally {
 				this.fIstream = null;
 			}
 		}
 
-		if (this.fOstream != null)
-		{
-			try 
-			{
+		if (this.fOstream != null) {
+			try {
 				this.fOstream.close();
-			}
-			finally 
-			{
+			} finally {
 				this.fOstream = null;
 			}
 		}
 
-		if (this.fSocket != null)
-		{
-			try 
-			{
+		if (this.fSocket != null) {
+			try {
 				this.fSocket.close();
-			}
-			finally 
-			{
+			} finally {
 				this.fSocket = null;
 			}
 		}

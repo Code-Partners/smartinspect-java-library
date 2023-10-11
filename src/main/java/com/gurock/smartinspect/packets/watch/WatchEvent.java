@@ -1,46 +1,37 @@
-//
-// <!-- Copyright (C) Code Partners Pty. Ltd. All rights reserved. -->
-//
+/**
+ * Copyright (C) Code Partners Pty. Ltd. All rights reserved.
+ */
 
 package com.gurock.smartinspect.packets.watch;
 
-// <summary>
-//   This class is used by the SmartInspectListener.onWatch event of
-//   the SmartInspect class.
-// </summary>
-// <remarks>
-//   It has only one public class member named getWatch. This member is
-//   a method, which just returns the sent packet.
-// </remarks>
-// <threadsafety>
-//   This class is fully threadsafe.
-// </threadsafety>
-
-public final class WatchEvent extends java.util.EventObject
-{
+/**
+ * This class is used by the SmartInspectListener.onWatch event of
+ * the SmartInspect class.
+ * It has only one public class member named getWatch. This member is
+ * a method, which just returns the sent packet.
+ * <p>
+ * This class is fully threadsafe.
+ */
+public final class WatchEvent extends java.util.EventObject {
 	private Watch fWatch;
 
-	// <summary>
-	//   Creates and initializes a WatchEvent instance.
-	// </summary>
-	// <param name="source">The object which fired the event</param>
-	// <param name="watch">The Watch which has just been sent</param>
-
-	public WatchEvent(Object source, Watch watch)
-	{
+	/**
+	 * Creates and initializes a WatchEvent instance.
+	 *
+	 * @param source The object which fired the event
+	 * @param watch  The Watch which has just been sent
+	 */
+	public WatchEvent(Object source, Watch watch) {
 		super(source);
 		this.fWatch = watch;
 	}
 
-	// <summary>
-	//   Returns the Watch packet, which has just been sent.
-	// </summary>
-	// <returns>
-	//   The Watch packet which has just been sent.
-	// </returns>
-
-	public Watch getWatch()
-	{
+	/**
+	 * Returns the Watch packet, which has just been sent.
+	 *
+	 * @return The Watch packet which has just been sent
+	 */
+	public Watch getWatch() {
 		return this.fWatch;
 	}
 }

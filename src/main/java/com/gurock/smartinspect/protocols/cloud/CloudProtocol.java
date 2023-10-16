@@ -455,8 +455,11 @@ public class CloudProtocol extends TcpProtocol {
             }
         }
 
+        if (validatePacketSize(packet)) {
+            virtualFileSize += packet.getSize();
+        }
+
         packetCount++;
-        virtualFileSize += packet.getSize();
     }
 
     private void maybeRotateVirtualFileId(Packet packet) throws ProtocolException {

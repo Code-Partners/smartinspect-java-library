@@ -1032,7 +1032,7 @@ public abstract class Protocol {
 		SchedulerCommand command = new SchedulerCommand();
 		command.setAction(SchedulerAction.WritePacket);
 		command.setState(packet);
-		this.fScheduler.schedule(command, SchedulerQueue.QueueEnd.TAIL);
+		this.fScheduler.schedule(command, insertTo);
 	}
 
 	/**

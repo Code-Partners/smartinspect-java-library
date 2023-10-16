@@ -439,7 +439,11 @@ public class CloudProtocol extends TcpProtocol {
                             } else {
                                 logger.fine(String.format("Packet #%d won't fit even in an empty chunk, writing it raw", packetCount));
 
-                                super.writePacket(packet);
+                                if (validatePacketSize(packet)) {
+                                    super.writePacket(packet);
+                                } else {
+                                    logger.fine("Packet exceed the max size and is ignored");
+                                }
                             }
                         }
                     } catch (Exception e) {

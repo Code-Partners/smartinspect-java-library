@@ -74,6 +74,8 @@ public class SchedulerCommand {
 	 * scheduler command. This functionality is used by the
 	 * asynchronous protocol mode to track the total size of
 	 * scheduler commands.
+	 *
+	 * @return total memory size
 	 */
 	public int getSize() {
 		if (this.fAction != SchedulerAction.WritePacket) {

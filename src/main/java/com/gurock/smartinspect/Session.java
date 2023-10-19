@@ -1039,6 +1039,7 @@ public class Session {
 	 * in the Process Flow toolbox. Please see the leaveProcess
 	 * method as the counter piece to enterProcess.
 	 *
+	 * @param level log level
 	 * @param processName The name of the process
 	 */
 	public void enterProcess(Level level, String processName) {
@@ -2921,7 +2922,9 @@ public class Session {
 	 * @param level The log level of this method call
 	 * @param title The title to display in the Console
 	 * @param lt    The custom Log Entry type
-	 * @param ctx   @see com.gurock.smartinspect.ViewerContext
+	 * @param ctx   viewer context
+	 *
+	 * @see com.gurock.smartinspect.ViewerContext
 	 */
 	public void logCustomContext(Level level, String title, LogEntryType lt,
 								 ViewerContext ctx) {
@@ -5266,6 +5269,7 @@ public class Session {
 	 * the setDefaultLevel method of the SmartInspect class.
 	 * </p>
 	 *
+	 * @param title Result set title
 	 * @param rmeta The metadata of a ResultSet which should be logged
 	 */
 	public void logResultSetMetaData(String title, ResultSetMetaData rmeta) {
@@ -5283,6 +5287,7 @@ public class Session {
 	 * see the raw schema of query results.
 	 *
 	 * @param level The log level of this method call
+	 * @param title Result set title
 	 * @param rmeta The metadata of a ResultSet which should be logged
 	 */
 	public void logResultSetMetaData(Level level, String title,
@@ -5919,7 +5924,7 @@ public class Session {
 	 *
 	 * <p>This method uses the default level of the session's parent as log
 	 * level. For more information, please refer to the documentation of
-	 * the setDefaultLevel method of the SmartInspect class.</p
+	 * the setDefaultLevel method of the SmartInspect class.</p>
 	 *
 	 * @param name       The name of the Watch
 	 * @param value      The value to display as Watch value
@@ -6702,6 +6707,7 @@ public class Session {
 	/**
 	 * Overloaded. Logs a custom Process Flow entry with a custom log level.
 	 *
+	 * @param level Log level
 	 * @param title The title of the new Process Flow entry
 	 * @param pt    The Process Flow type to use
 	 * @see com.gurock.smartinspect.ProcessFlow

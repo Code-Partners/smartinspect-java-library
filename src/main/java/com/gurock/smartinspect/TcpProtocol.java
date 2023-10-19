@@ -65,6 +65,7 @@ public class TcpProtocol extends Protocol {
 	 * The following table lists all valid options, their default values and descriptions for the TCP protocol:
 	 *
 	 * <table border="1">
+	 *     <caption>Tcp protocol options</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Valid Options</th>

@@ -27,8 +27,9 @@ public abstract class Formatter {
 	 * Derived classes are intended to compile the supplied packet
 	 * and return the required size for the compiled result.
 	 *
-	 * @param packet The packet to compile.
-	 * @return The size for the compiled result.
+	 * @param packet The packet to compile
+	 * @return The size for the compiled result
+	 * @throws IOException io exception
 	 */
 	public abstract int compile(Packet packet) throws IOException;
 

@@ -19,6 +19,7 @@ import java.util.Set;
  * a short description.
  *
  * <table border="1">
+ *     <caption>Available protocols</caption>
  *     <thead>
  *         <tr>
  *             <th>Protocol</th>
@@ -363,6 +364,7 @@ public abstract class Protocol {
 	 * The following table lists the available units together with a
 	 * short description and the corresponding factor:
 	 * <table border="1">
+	 *     <caption>Size units</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Unit Name</th>
@@ -413,6 +415,7 @@ public abstract class Protocol {
 	 * corresponding factor. </p>
 	 *
 	 * <table>
+	 * <caption>Time nits</caption>
 	 * <tr><th>Unit Name</th> <th>Description</th> <th>Factor</th></tr>
 	 * <tr><td>s</td> <td>Seconds</td> <td>1000</td></tr>
 	 * <tr><td>m</td> <td>Minutes</td> <td>60*s</td></tr>
@@ -483,13 +486,14 @@ public abstract class Protocol {
 	}
 
 	/**
-	 * Validates if a option is supported by this protocol.
+	 * Validates if an option is supported by this protocol.
 	 *
 	 * <p>
 	 * The following table lists all valid options, their default values and descriptions common to
 	 * all protocols. See below for explanations:
 	 *
 	 * <table border="1">
+	 *     <caption>Protocol options</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Option Name</th>
@@ -695,7 +699,9 @@ public abstract class Protocol {
 	 * <p>
 	 * This method resets the current protocol state by clearing the internal queue of packets,
 	 * setting the connected status to false and calling the abstract internalDisconnect method
-	 * of a real protocol implementation to cleanup any protocol specific resources.
+	 * of a real protocol implementation to clean up any protocol specific resources.
+	 *
+	 * @throws Exception exception
 	 */
 	protected void reset() throws Exception {
 		this.fConnected = false;

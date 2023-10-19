@@ -28,7 +28,7 @@ public interface SmartInspectListener {
 	 * to the error event can cause a presumably undesired recursive
 	 * behavior.</p>
 	 *
-	 * <h4>Example:</h4>
+	 * Example:
 	 * <pre>
 	 * import com.gurock.smartinspect.*;
 	 *
@@ -82,8 +82,7 @@ public interface SmartInspectListener {
 	 * recursive behavior. Also, if you specified that one or more
 	 * connections of this SmartInspect object should operate in
 	 * asynchronous protocol mode, you need to protect the passed ControlCommand packet and its data by
-	 * calling its <link Packet.lock, lock> and <link Packet.unlock,
-	 * unlock> methods before and after processing.
+	 * calling its {@link Packet#lock} and {@link Packet#unlock} methods before and after processing.
 	 *
 	 * <pre>
 	 * import com.gurock.smartinspect.*;

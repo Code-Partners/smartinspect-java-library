@@ -174,7 +174,8 @@ public class SmartInspect {
 	 * development machines but normally not tolerable on production systems:
 	 *
 	 * <table border="1">
-	 * 	<thead>
+	 *  <caption>High-resolution timestamp problems</caption>
+	 *  <thead>
 	 * 		<tr>
 	 * 			<th>Problem</th>
 	 * 			<th>Description</th>
@@ -249,6 +250,8 @@ public class SmartInspect {
 	 * different applications in the SmartInspect Console. If you set
 	 * this property to null, the application name will be empty when
 	 * sending Log Entries
+	 *
+	 * @param appName application name
 	 */
 	public void setAppName(String appName) {
 		if (appName == null) {
@@ -725,6 +728,7 @@ public class SmartInspect {
 	 * SiAuto.si.setConnections("file(), file(filename=\"anotherlog.sil\")");
 	 * </pre>
 	 *
+	 * @param connections connection string
 	 * @throws InvalidConnectionsException if invalid syntax, unknown protocols or inexistent options are found
 	 */
 	public void setConnections(String connections)
@@ -913,7 +917,6 @@ public class SmartInspect {
 	 * asynchronous protocol mode.
 	 * <p>
 	 * If the supplied caption argument is null, this method does nothing and returns immediately.
-	 * <p>
 	 * <pre>
 	 * // Set the connections string and enable logging. We do not
 	 * // specify a caption for the memory connection and stick with
@@ -940,7 +943,6 @@ public class SmartInspect {
 	 * 	os.close();
 	 * }
 	 * </pre>
-	 * <p>
 	 * <pre>
 	 * ...
 	 *
@@ -1347,7 +1349,7 @@ public class SmartInspect {
 	/**
 	 * Invokes the Error event handlers.
 	 * Derived classes can override this method to intercept the
-	 * {@link SmartInspectListener#onError, Error event}
+	 * {@link SmartInspectListener#onError}
 	 *
 	 * @param ex The occurred exception
 	 */

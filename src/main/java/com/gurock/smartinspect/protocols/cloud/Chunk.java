@@ -40,7 +40,9 @@ public class Chunk extends Packet {
     }
 
     /**
-     * Compile but don't add to the chunk yet
+     * Compile but don't add to the chunk yet.
+     * @param packet packet to compile
+     * @throws IOException io exception
      */
     public void compilePacket(Packet packet) throws IOException {
         lastCompiledPacketSize = formatter.compile(packet);

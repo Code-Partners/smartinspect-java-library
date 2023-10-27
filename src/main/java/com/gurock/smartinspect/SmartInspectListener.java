@@ -4,6 +4,7 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
 import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
 import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;

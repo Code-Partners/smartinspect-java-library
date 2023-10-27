@@ -28,7 +28,6 @@ import java.util.logging.*;
  * Note: This class is fully threadsafe.
  *
  * <pre>
- * {@code
  * import java.util.logging.*;
  * import com.gurock.smartinspect.*;
  * import com.gurock.smartinspect.jdk.*;
@@ -205,6 +204,7 @@ public final class SmartInspectHandler extends java.util.logging.Handler {
 	 * lists the conversion method:</p>
 	 *
 	 * <table>
+	 * <caption>Log level conversions</caption>
 	 * <tr><th>java.util.logging.Level</th><th>com.gurock.smartinspect.Level</th></tr>
 	 * <tr><td>Level.FINEST, Level.FINER</td><td>Level.Debug</td></tr>
 	 * <tr><td>Level.FINE, LEVEL.CONFIG</td><td>Level.Verbose</td></tr>
@@ -223,6 +223,7 @@ public final class SmartInspectHandler extends java.util.logging.Handler {
 	 * The following table lists the conversion method:</p>
 	 *
 	 * <table>
+	 * <caption>Log level conversions</caption>
 	 * <tr><th>java.util.logging.Level</th><th>Corresponding Session method</th></tr>
 	 * <tr><td>Level.FINEST, Level.FINER</td><td>Session.logDebug</td></tr>
 	 * <tr><td>Level.FINE, LEVEL.CONFIG</td><td>Session.logVerbose</td></tr>

@@ -142,11 +142,12 @@ public class CloudProtocol extends TcpProtocol {
      * The following table lists all valid options, their default values
      * and descriptions for the TCP protocol.
      * <table border="1">
+     * <caption>Tcp protocol options</caption>
      * <tr>
      * <th>Valid Options</th>
      * <th>Default Value</th>
      * <th>Description</th>
-     </tr>
+     * </tr>
      *   <tr>
      *     <td>writekey</td>
      *     <td></td>
@@ -374,8 +375,8 @@ public class CloudProtocol extends TcpProtocol {
     /**
      * Overrides TCP protocol handshake by reversing the order,
      * for compatibility with TLS.
-     * @throws IOException
-     * @throws SmartInspectException
+     * @throws IOException io exception
+     * @throws SmartInspectException failed to read banner
      */
     @Override
     protected void doHandShake() throws IOException, SmartInspectException {

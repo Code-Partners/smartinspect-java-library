@@ -6,7 +6,7 @@ import com.gurock.smartinspect.connections.builder.ConnectionStringBuilder;
 /**
  * Class for convenient composition of the connection string.
  * Extends ConnectionStringBuilder by adding cloud protocol.
- * <p></p>
+ * <p>
  * Example:
  * <pre>
  * si.setConnections(

@@ -8,8 +8,8 @@ package com.gurock.smartinspect.packets;
  * Manages a memory size limited queue of packets.
  * <p>
  * This class is responsible for managing a size limited queue of
- * packets. This functionality is needed by the protocol
- * {@link Protocol#isValidOption backlog} feature. The maximum total
+ * packets. This functionality is needed by the
+ * Protocol#isValidOption method. The maximum total
  * memory size of the queue can be set with the setBacklog method.
  * New packets can be added with the push method. Packets which are
  * no longer needed can be retrieved and removed from the queue with

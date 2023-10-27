@@ -45,6 +45,7 @@ public class SchedulerQueue {
 	 * overhead). This queue does not have a maximum size or count.
 	 *
 	 * @param command The command to add
+	 * @param insertTo The queue end to insert the command to (head or tail)
 	 */
 	public void enqueue(SchedulerCommand command, QueueEnd insertTo) {
 		SchedulerQueueItem item = new SchedulerQueueItem();

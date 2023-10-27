@@ -2935,7 +2935,7 @@ public class Session {
 	 * @param lt    The custom Log Entry type
 	 * @param ctx   viewer context
 	 *
-	 * @see com.gurock.smartinspect.ViewerContext
+	 * @see com.gurock.smartinspect.contexts.ViewerContext
 	 */
 	public void logCustomContext(Level level, String title, LogEntryType lt,
 								 ViewerContext ctx) {

@@ -5,6 +5,7 @@
 package com.gurock.smartinspect.contexts;
 
 import com.gurock.smartinspect.ViewerId;
+import com.gurock.smartinspect.packets.logentry.LogEntry;
 
 /**
  * Represents the binary viewer in the Console which can display binary

@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -308,12 +309,21 @@ public class BinaryFormatter extends Formatter {
 	 */
 	public void write(OutputStream stream) throws IOException {
 		if (this.fSize > 0) {
+			logger.finest("Writing packet to output stream");
+
 			writeShort(stream,
 					(short) this.fPacket.getPacketType().getIntValue());
 
 			logger.fine("body size = " + fSize);
-
 			writeInt(stream, this.fSize);
+
+			// log stream as byte array
+			if (logger.isLoggable(Level.FINEST)) {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				this.fStream.writeTo(baos);
+				logger.finest("stream = " + baos.toString());
+			}
+
 			this.fStream.writeTo(stream);
 		}
 	}

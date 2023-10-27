@@ -81,6 +81,7 @@ public class PipeProtocol extends Protocol {
 	 * values and descriptions for the pipe protocol.
 	 *
 	 * <table border="1">
+	 *     <caption>Pipe protocol options</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Valid Options</th>

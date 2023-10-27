@@ -29,6 +29,7 @@ public class ConnectionStringBuilder {
 
 	/**
 	 * Adds Pipe protocol, returns PipeProtocolConnectionStringBuilder instance with property setters.
+	 * @return Connection string builder
 	 */
 	public PipeProtocolConnectionStringBuilder addPipeProtocol() {
 		cb.beginProtocol("pipe");
@@ -38,6 +39,7 @@ public class ConnectionStringBuilder {
 	/**
 	 * Adds File protocol, returns FileProtocolConnectionStringBuilder
 	 * instance with property setters.
+	 * @return Connection string builder
 	 */
 	public FileProtocolConnectionStringBuilder addFileProtocol() {
 		cb.beginProtocol("file");
@@ -47,6 +49,7 @@ public class ConnectionStringBuilder {
 	/**
 	 * Adds Memory protocol. Returns a MemoryProtocolConnectionStringBuilder
 	 * instance with property setters.
+	 * @return Connection string builder
 	 */
 	public MemoryProtocolConnectionStringBuilder addMemoryProtocol() {
 		cb.beginProtocol("mem");
@@ -56,6 +59,7 @@ public class ConnectionStringBuilder {
 	/**
 	 * Adds Tcp protocol, returns TcpProtocolConnectionStringBuilder
 	 * instance with property setters.
+	 * @return Connection string builder
 	 */
 	public TcpProtocolConnectionStringBuilder addTcpProtocol() {
 		cb.beginProtocol("tcp");
@@ -65,6 +69,7 @@ public class ConnectionStringBuilder {
 	/**
 	 * Adds Text protocol, returns TextProtocolConnectionStringBuilder
 	 * instance with property setters.
+	 * @return Connection string builder
 	 */
 	public TextProtocolConnectionStringBuilder addTextProtocol() {
 		cb.beginProtocol("text");
@@ -73,6 +78,8 @@ public class ConnectionStringBuilder {
 
 	/**
 	 * Builds the resulting connection string.
+	 *
+	 * @return connection string
 	 */
 	public String build() {
 		return cb.getConnections();

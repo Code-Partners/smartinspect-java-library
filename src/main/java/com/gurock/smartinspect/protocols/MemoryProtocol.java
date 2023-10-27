@@ -212,6 +212,7 @@ public class MemoryProtocol extends Protocol {
 	 * For a list of options common to all protocols, please have a look at the method of the parent class.
 	 *
 	 * <table border="1">
+	 *     <caption>Memory protocol options</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Valid Options</th>
@@ -244,7 +245,6 @@ public class MemoryProtocol extends Protocol {
 	 * </table>
 	 * <p>
 	 * If the "astext" option is used for creating a textual output instead of the default binary, the "pattern" string specifies the textual representation of a log packet. For detailed information of how a pattern string can look like, please have a look at the documentation of the PatternParser class, especially the PatternParser.setPattern method.
-	 * <p>
 	 * <pre>
 	 * Example Usage:
 	 * SiAuto.si.setConnections("mem()")

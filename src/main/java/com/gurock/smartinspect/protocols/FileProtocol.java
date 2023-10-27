@@ -123,6 +123,7 @@ public class FileProtocol extends Protocol {
 	 * The following table lists all valid options, their default values
 	 * and descriptions for the file protocol.
 	 * <table border="1">
+	 * <caption>File protocol options</caption>
 	 * <tr>
 	 *   <th>Valid Options</th>
 	 *   <th>Default Value</th>
@@ -461,6 +462,7 @@ public class FileProtocol extends Protocol {
 	 * @param size   Specifies the current size of the supplied stream.
 	 * @return The new size of the stream after writing the header. If no
 	 * header is written, the supplied size argument is returned.
+	 * @throws IOException io exception
 	 */
 	protected long writeHeader(OutputStream stream, long size)
 			throws IOException {

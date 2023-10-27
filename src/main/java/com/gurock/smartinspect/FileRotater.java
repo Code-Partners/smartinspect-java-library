@@ -84,9 +84,10 @@ public class FileRotater {
 	 * initialize.
 	 * Before calling this method, always call the initialize method.
 	 *
-	 * @param now The timestamp to update this object.
+	 * @param now The timestamp to update this object
 	 * @return True if the rotate state has changed since the last call to this method
-	 * or to initialize and false otherwise.
+	 * or to initialize and false otherwise
+	 * @throws Exception exception
 	 */
 	public boolean update(Date now) throws Exception {
 		int timeValue = getTimeValue(now);

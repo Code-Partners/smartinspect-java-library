@@ -168,8 +168,8 @@ public class PatternParser {
 	 * You can also specify the minimum width of a value like this: %name,width%. Width must be a valid positive or negative integer. If the width is greater than 0, formatted values will be right-aligned. If the width is less than 0, they will be left-aligned.
 	 * <p>
 	 * The following table lists the available variables together with the corresponding LogEntry method/property.
-	 * <p>
 	 * <table border="1">
+	 *     <caption>Available variables</caption>
 	 *     <thead>
 	 *         <tr>
 	 *             <th>Variable</th>

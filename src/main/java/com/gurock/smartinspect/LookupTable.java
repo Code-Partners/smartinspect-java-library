@@ -266,6 +266,7 @@ public class LookupTable {
 	 * <p>The following table lists the available units together with a
 	 * short description and the corresponding factor:</p>
 	 * <table>
+	 *   <caption>Size units</caption>
 	 *   <tr>
 	 *     <th>Unit Name</th>
 	 *     <th>Description</th>
@@ -443,10 +444,11 @@ public class LookupTable {
 	/**
 	 * Returns a Color value of an element for a given key.
 	 * The element value must be specified as hexadecimal string.
-	 * To indicate that the element value represents a hexadecimal string, the element value must begin with "0x", "&H" or "$".
+	 * To indicate that the element value represents a hexadecimal string, the element value must begin with "0x", "{@literal &}H" or "$".
 	 * A '0' nibble is appended if the hexadecimal string has an odd length.
 	 * The hexadecimal value must represent a three or four byte integer value. The hexadecimal value is handled as follows.
 	 * <table border="1">
+	 *  <caption>Formats</caption>
 	 * 	<tr>
 	 * 		<th>Bytes</th>
 	 * 		<th>Format</th>

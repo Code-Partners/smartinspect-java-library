@@ -255,16 +255,15 @@ public class Configuration {
 	/**
 	 * Returns a Color value of an element for a given key.
 	 * <p>This method requires the element value to be specified as a hexadecimal string.
-	 * To indicate that the element value represents a hexadecimal string, the element value must begin with "0x", "&H" or "$".
+	 * To indicate that the element value represents a hexadecimal string,
+	 * the element value must begin with "0x", "{@literal &}H" or "$".
 	 * A '0' nibble is appended if the hexadecimal string has an odd length.</p>
-	 *
 	 * <p>The hexadecimal value must represent a three or four byte integer value. The hexadecimal values are handled as follows:
 	 * <ul>
 	 * <li>3 bytes: RRGGBB</li>
 	 * <li>4 bytes: AARRGGBB</li>
 	 * <li>Other: Ignored</li>
-	 * </ul></p>
-	 *
+	 * </ul>
 	 * <p>A stands for the alpha channel and R, G, and B represent the red, green and blue channels, respectively.
 	 * If the value is not given as hexadecimal value with a length of 6 or 8 characters excluding the hexadecimal prefix identifier
 	 * or if the value does not have a valid hexadecimal format, this method returns defaultValue.</p>

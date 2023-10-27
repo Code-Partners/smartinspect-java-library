@@ -124,6 +124,7 @@ public class TextProtocol extends FileProtocol {
 	/**
 	 * Overridden. Validates if a protocol option is supported.
 	 * <table>
+	 * <caption>Text protocol options</caption>
 	 * <tr><th>Valid Options</th><th>Default Value</th><th>Description</th></tr>
 	 * <tr><td>indent</td><td>false</td><td>Indicates if the logging output
 	 *  should automatically be indented like in the Console</td></tr>
@@ -140,7 +141,6 @@ public class TextProtocol extends FileProtocol {
 	 * list of options common to all file protocols, please have a
 	 * look at the isValidOption method of the parent class. Please note that this text
 	 * protocol <b>does not support log file encryption</b>.
-	 * <p>
 	 * <pre>
 	 * SiAuto.Si.setConnections("text()");
 	 * SiAuto.Si.setConnections("text(filename=\"log.txt\", append=true)");

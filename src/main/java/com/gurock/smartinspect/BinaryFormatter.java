@@ -9,6 +9,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Responsible for formatting and writing a packet in the standard
@@ -24,6 +27,8 @@ import java.io.UnsupportedEncodingException;
  */
 public class BinaryFormatter extends Formatter
 {
+	private static final Logger logger = Logger.getLogger(BinaryFormatter.class.getName());
+
 	private static final long MICROSECONDS_PER_DAY = 86400000000L;
 	private static final int DAY_OFFSET = 25569;
 	private static final int MAX_STREAM_CAPACITY = 1 * 1024 * 1024;
@@ -330,9 +335,19 @@ public class BinaryFormatter extends Formatter
 	{
 		if (this.fSize > 0)
 		{
+			logger.finest("Writing packet to output stream");
+
 			writeShort(stream, 
 				(short) this.fPacket.getPacketType().getIntValue());
 			writeInt(stream, this.fSize);
+
+			// log stream as byte array
+			if (logger.isLoggable(Level.FINEST)) {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				this.fStream.writeTo(baos);
+				logger.finest("stream = " + Arrays.toString(baos.toByteArray()));
+			}
+
 			this.fStream.writeTo(stream);
 		}
 	}

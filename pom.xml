@@ -8,6 +8,28 @@
     <artifactId>smartinspect-java-library</artifactId>
     <version>0.1-SNAPSHOT</version>
 
+    <name>SmartInspect Java Client Library</name>
+    <description>
+        Client library to integrate SmartInspect logging into Java applications.
+    </description>
+    <url>https://code-partners.com/offerings/smartinspect/</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/Code-Partners/smartinspect-java-library/blob/main/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Sergey Zhukov</name>
+            <email>sergey@code-partners.com</email>
+            <organization>Code Partners Pty Ltd</organization>
+            <organizationUrl>https://www.code-partners.com/</organizationUrl>
+        </developer>
+    </developers>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -21,6 +43,19 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>

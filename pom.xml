@@ -87,4 +87,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git://github.com/Code-Partners/smartinspect-java-library.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Code-Partners/smartinspect-java-library.git</developerConnection>
+        <url>https://github.com/Code-Partners/smartinspect-java-library/tree/main</url>
+    </scm>
 </project>

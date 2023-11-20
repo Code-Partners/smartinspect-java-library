@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'openjdk:8-jre-slim'
+      image 'openjdk:8'
     }
   }
   triggers{

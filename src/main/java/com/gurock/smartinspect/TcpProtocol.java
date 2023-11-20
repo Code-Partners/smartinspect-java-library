@@ -93,7 +93,7 @@ public class TcpProtocol extends Protocol {
 	 * </table>
 	 * <p>
 	 * For further options which affect the behavior of this protocol, please have a look at the documentation of the Protocol.isValidOption method of the parent class.
-	 * <h3>Example:</h3>
+	 * Example:
 	 * <pre>
 	 * SiAuto.si.setConnections("tcp()");
 	 * SiAuto.si.setConnections("tcp(host=\\"localhost\\", port=4229)");

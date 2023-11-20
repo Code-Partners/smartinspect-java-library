@@ -498,8 +498,6 @@ public class FileProtocol extends Protocol {
 	 * Additionally, if the "rotate" option is active, the log file
 	 * is rotated if necessary. Please see the documentation of the
 	 * isValidOption method for more information.
-	 * <p>
-	 *
 	 * @param packet The packet to write.
 	 * @throws Exception If writing the packet to the destination file fails.
 	 */

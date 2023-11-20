@@ -89,7 +89,6 @@ public class OptionsParser {
 	 * please refer to the documentation of the Protocol.setOptions
 	 * method.
 	 * <p>
-	 *
 	 * @param protocol The related protocol. Not allowed to be null
 	 * @param options  The options to parse. Not allowed to be null
 	 * @param callback The callback listener which should be informed about found options. Not allowed to be null

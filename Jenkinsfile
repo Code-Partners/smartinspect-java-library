@@ -21,7 +21,7 @@ pipeline {
         '''
       }
     }
-    stage('Staging release') {
+    stage('Maven Central release') {
       when {
         expression { BRANCH_NAME.startsWith('release-') }
       }
@@ -29,7 +29,10 @@ pipeline {
         sh '''#!/bin/bash -e
           gpg --import --batch ${GPG_SECRET_KEY}
 
+          # staging release
           ./mvnw -s ${MAVEN_SETTINGS_XML} clean deploy
+          
+          # propagate staging release to Maven Central
           ./mvnw -s ${MAVEN_SETTINGS_XML} nexus-staging:release
         '''
       }

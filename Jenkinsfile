@@ -27,7 +27,7 @@ pipeline {
       }
       steps {
         sh '''#!/bin/bash -e
-          gpg --import ${GPG_SECRET_KEY}
+          gpg --import --batch ${GPG_SECRET_KEY}
 
           ./mvnw -s ${MAVEN_SETTINGS_XML} clean deploy
         '''

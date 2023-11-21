@@ -30,6 +30,7 @@ pipeline {
           gpg --import --batch ${GPG_SECRET_KEY}
 
           ./mvnw -s ${MAVEN_SETTINGS_XML} clean deploy
+          ./mvnw -s ${MAVEN_SETTINGS_XML} nexus-staging:release
         '''
       }
     }

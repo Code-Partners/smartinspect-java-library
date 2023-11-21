@@ -1,0 +1,5 @@
+FROM openjdk:8
+
+RUN mkdir /.gnupg && chmod 777 /.gnupg
+
+ENTRYPOINT [""]

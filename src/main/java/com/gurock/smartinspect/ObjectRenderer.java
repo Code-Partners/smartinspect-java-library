@@ -16,7 +16,7 @@ import java.util.Map;
  * <p>
  * The public static members of this class are thread-safe.
  */
-final class ObjectRenderer {
+public final class ObjectRenderer {
 	private ObjectRenderer() {
 	}
 

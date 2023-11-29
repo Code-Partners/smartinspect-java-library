@@ -96,7 +96,7 @@ public final class SourceId extends Enum {
 	 *
 	 * @return The related viewer ID
 	 */
-	protected ViewerId toViewerId() {
+	public ViewerId toViewerId() {
 		return this.fVi;
 	}
 }

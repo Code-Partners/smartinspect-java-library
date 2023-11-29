@@ -4,6 +4,23 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.connections.ConnectionsParser;
+import com.gurock.smartinspect.connections.ConnectionsParserEvent;
+import com.gurock.smartinspect.connections.ConnectionsParserListener;
+import com.gurock.smartinspect.packets.Packet;
+import com.gurock.smartinspect.packets.controlcommand.ControlCommand;
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlow;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.Watch;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+import com.gurock.smartinspect.protocols.*;
+import com.gurock.smartinspect.session.Session;
+import com.gurock.smartinspect.session.SessionDefaults;
+import com.gurock.smartinspect.session.SessionManager;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -909,8 +926,8 @@ public class SmartInspect {
 	 * the example section below for details.
 	 * <p>
 	 * For more information about custom protocol actions, please
-	 * refer to the {@link com.gurock.smartinspect.Protocol#dispatch} method. Also have a look at
-	 * the {@link com.gurock.smartinspect.Protocol#isValidOption} method which explains how to set
+	 * refer to the {@link com.gurock.smartinspect.protocols.Protocol#dispatch} method. Also have a look at
+	 * Protocol.isValidOption() method which explains how to set
 	 * the caption of a connection.
 	 * <p>
 	 * Please note that the custom protocol action is executed asynchronously if the requested connection operates in
@@ -973,8 +990,7 @@ public class SmartInspect {
 	 * @param caption The identifier of the connection. Not allowed to be null
 	 * @param action The action to execute by the requested connection
 	 * @param state An optional object which encapsulates additional protocol specific information about the custom action. Can be null
-	 * @see com.gurock.smartinspect.Protocol#dispatch
-	 * @see com.gurock.smartinspect.Protocol#isValidOption
+	 * @see com.gurock.smartinspect.protocols.Protocol#dispatch
 	 */
 	public void dispatch(String caption, int action, Object state) {
 		if (caption == null) {
@@ -1201,7 +1217,7 @@ public class SmartInspect {
 	 * @param to      The new name of the session
 	 * @param from    The old name of the session
 	 */
-	protected void updateSession(Session session, String to, String from) {
+	public void updateSession(Session session, String to, String from) {
 		this.fSessions.update(session, to, from);
 	}
 

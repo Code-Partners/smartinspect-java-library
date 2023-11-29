@@ -4,6 +4,12 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.Packet;
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+
 /**
  * This listener interface is used in the SmartInspect class for all
  * kinds of event reporting.
@@ -107,8 +113,8 @@ public interface SmartInspectListener {
 	 * </pre>
 	 *
 	 * @param e The event argument for the event handlers
-	 * @see com.gurock.smartinspect.ControlCommand
-	 * @see com.gurock.smartinspect.ControlCommandEvent
+	 * @see com.gurock.smartinspect.packets.controlcommand.ControlCommand
+	 * @see com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent
 	 */
 	public void onControlCommand(ControlCommandEvent e);
 
@@ -150,8 +156,8 @@ public interface SmartInspectListener {
 	 * </pre>
 	 *
 	 * @param e The event argument for the event handlers
-	 * @see com.gurock.smartinspect.LogEntry
-	 * @see com.gurock.smartinspect.LogEntryEvent
+	 * @see com.gurock.smartinspect.packets.logentry.LogEntry
+	 * @see com.gurock.smartinspect.packets.logentry.LogEntryEvent
 	 */
 	public void onLogEntry(LogEntryEvent e);
 
@@ -191,8 +197,8 @@ public interface SmartInspectListener {
 	 * </pre>
 	 *
 	 * @param e The event argument for the event handlers
-	 * @see com.gurock.smartinspect.ProcessFlow
-	 * @see com.gurock.smartinspect.ProcessFlowEvent
+	 * @see com.gurock.smartinspect.packets.processflow.ProcessFlow
+	 * @see com.gurock.smartinspect.packets.processflow.ProcessFlowEvent
 	 */
 	public void onProcessFlow(ProcessFlowEvent e);
 
@@ -234,8 +240,8 @@ public interface SmartInspectListener {
 	 *
 	 *
 	 * @param e the event argument for the event handlers
-	 * @see com.gurock.smartinspect.Watch
-	 * @see com.gurock.smartinspect.WatchEvent
+	 * @see com.gurock.smartinspect.packets.watch.Watch
+	 * @see com.gurock.smartinspect.packets.watch.WatchEvent
 	 */
 	public void onWatch(WatchEvent e);
 
@@ -280,7 +286,7 @@ public interface SmartInspectListener {
 	 * </pre>
 	 *
 	 * @param e The event argument for the event handlers
-	 * @see com.gurock.smartinspect.Packet
+	 * @see com.gurock.smartinspect.packets.Packet
 	 * @see com.gurock.smartinspect.FilterEvent
 	 */
 	public void onFilter(FilterEvent e);

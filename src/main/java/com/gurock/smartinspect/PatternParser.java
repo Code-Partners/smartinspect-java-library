@@ -4,6 +4,9 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+import com.gurock.smartinspect.packets.logentry.LogEntryType;
+
 import java.util.ArrayList;
 
 /**

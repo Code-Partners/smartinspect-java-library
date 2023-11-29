@@ -10,7 +10,7 @@ package com.gurock.smartinspect;
  * an enumeration type.
  * This class is fully thread-safe.
  */
-abstract class Enum {
+public abstract class Enum {
 	private int fValue;
 	private String fName;
 	private String fToString;

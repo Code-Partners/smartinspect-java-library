@@ -4,6 +4,11 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.controlcommand.ControlCommandEvent;
+import com.gurock.smartinspect.packets.logentry.LogEntryEvent;
+import com.gurock.smartinspect.packets.processflow.ProcessFlowEvent;
+import com.gurock.smartinspect.packets.watch.WatchEvent;
+
 /**
  * Represents the adapter class for the SmartInspectListener event
  * interface of the SmartInspect class.

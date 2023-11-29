@@ -4,6 +4,8 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+
 /**
  * Represents a token in the pattern string of the TextProtocol protocol.
  * <p>

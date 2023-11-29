@@ -4,6 +4,8 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.session.Session;
+
 /**
  * Provides automatically created objects for using the SmartInspect
  * and Session classes. This class provides a static field called si
@@ -55,7 +57,7 @@ public final class SiAuto {
 	 * Automatically created SmartInspect instance.
 	 *
 	 * <p>The connections string is set to "pipe(reconnect=true, reconnect.interval=1s)".
-	 * Please see {@link Protocol#isValidOption} for information on the
+	 * Please see Protocol.isValidOption() for information on the
 	 * used options. The application name is set to "Auto".</p>
 	 *
 	 * <p><b>Please note that the default connections string has been

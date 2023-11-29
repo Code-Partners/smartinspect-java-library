@@ -4,6 +4,8 @@
 
 package com.gurock.smartinspect;
 
+import com.gurock.smartinspect.packets.Packet;
+
 /**
  * This class is used by the SmartInspectListener.onFilter event of the SmartInspect class.
  * <p>

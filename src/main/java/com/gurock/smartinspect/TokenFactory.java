@@ -4,7 +4,10 @@
 
 package com.gurock.smartinspect;
 
-import java.awt.Color;
+import com.gurock.smartinspect.packets.logentry.LogEntry;
+import com.gurock.smartinspect.session.Session;
+
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

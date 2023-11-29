@@ -1,6 +1,6 @@
 package com.gurock.smartinspect.connections.builder;
 
-import com.gurock.smartinspect.ConnectionsBuilder;
+import com.gurock.smartinspect.connections.ConnectionsBuilder;
 
 /**
  * Class for convenient composition of the connection string.
@@ -25,7 +25,7 @@ import com.gurock.smartinspect.ConnectionsBuilder;
  * </pre>
  */
 public class ConnectionStringBuilder {
-	ConnectionsBuilder cb = new ConnectionsBuilder();
+	protected ConnectionsBuilder cb = new ConnectionsBuilder();
 
 	/**
 	 * Adds Pipe protocol, returns PipeProtocolConnectionStringBuilder instance with property setters.

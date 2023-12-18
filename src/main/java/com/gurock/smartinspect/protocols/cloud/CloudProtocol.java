@@ -4,8 +4,6 @@ import com.gurock.smartinspect.FileRotate;
 import com.gurock.smartinspect.FileRotater;
 import com.gurock.smartinspect.SmartInspectException;
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
-import com.gurock.smartinspect.formatters.BinaryFormatter;
-import com.gurock.smartinspect.formatters.Formatter;
 import com.gurock.smartinspect.packets.LogHeader;
 import com.gurock.smartinspect.packets.Packet;
 import com.gurock.smartinspect.packets.PacketType;
@@ -76,10 +74,11 @@ public class CloudProtocol extends TcpProtocol {
     private static int MIN_ALLOWED_CHUNK_MAX_SIZE = 10 * 1024;
 
     /**
-     * Maximal size of a packet that can be sent to the Cloud.
-     * When exceeded, the packet is ignored.
+     * Maximal size of a packet that can be stored in the Cloud as a single DB record.
+     * When exceeded, the packet is partitioned.
+     * Chunks must be smaller than this limit.
      */
-    private static int PACKET_MAX_SIZE = 395 * 1024;
+     private static int CHUNK_MAX_SIZE = 395 * 1024;
 
     private static int MIN_ALLOWED_CHUNK_MAX_AGE = 500;
     private static int DEFAULT_CHUNK_MAX_AGE = 1000;
@@ -264,7 +263,7 @@ public class CloudProtocol extends TcpProtocol {
     private void loadChunkingOptions() {
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 
-        chunkMaxSize = getSizeOption("chunking.maxsize", PACKET_MAX_SIZE);
+        chunkMaxSize = getSizeOption("chunking.maxsize", CHUNK_MAX_SIZE);
         if (chunkMaxSize < MIN_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MIN_ALLOWED_CHUNK_MAX_SIZE;
         if (chunkMaxSize > MAX_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MAX_ALLOWED_CHUNK_MAX_SIZE;
 
@@ -680,23 +679,14 @@ public class CloudProtocol extends TcpProtocol {
         }
     }
 
-
     /**
-     * Validate size of an individual packet. It is done by creating a separate
-     * formatter, formatting packet and comparing its size to the max size.
-     * This is not optimal, but in reality cloud protocol will almost never work
-     * with individual (non chunked) packets.
+     * Validate size of an individual packet. After partitioning was implemented, the upper limit of the packet size
+     * is no longer set as a hard limit in the clients, but in case it'll be done in the future, this method
+     * is left here undeleted.
      * @param packet packet
      * @return `true` if packet size <= max allowed size
      */
     private boolean validatePacketSize(Packet packet) {
-        Formatter formatter = new BinaryFormatter();
-        try {
-            int size = formatter.compile(packet);
-
-            return (size <= PACKET_MAX_SIZE);
-        } catch (IOException e) {
-            return true;
-        }
+        return true;
     }
 }

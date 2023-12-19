@@ -319,6 +319,8 @@ public class Scheduler {
 		int commandSize = command.getSize();
 
 		if (commandSize > this.fThreshold) {
+			logger.fine("Packet is bigger than scheduler queue size (set with async.queue option), ignored");
+
 			return false;
 		}
 

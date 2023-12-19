@@ -260,6 +260,17 @@ public class CloudProtocol extends TcpProtocol {
         return true;
     }
 
+    /**
+     * Defines the default value for `async.queue` option as 20 megabytes.
+     * Double the size of the max packet size supported by the cloud. We want async queue to fit the largest packet,
+     * as have some spare space.
+     * @return 20480
+     */
+    @Override
+    protected int getAsyncQueueDefaultValue() {
+        return 20*1024;
+    }
+
     private void loadChunkingOptions() {
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 

@@ -702,17 +702,33 @@ public abstract class Protocol {
 
 		this.fAsyncEnabled = getBooleanOption("async.enabled", getAsyncEnabledDefaultValue());
 		this.fAsyncThrottle = getBooleanOption("async.throttle", true);
-		this.fAsyncQueue = getSizeOption("async.queue", 2048);
+		this.fAsyncQueue = getSizeOption("async.queue", getAsyncQueueDefaultValue());
 		this.fAsyncClearOnDisconnect =
 				getBooleanOption("async.clearondisconnect", false);
 	}
 
+	/**
+	 * Defines the default value for `reconnect` option as `true`.
+	 * @return true
+	 */
 	protected boolean getReconnectDefaultValue() {
 		return false;
 	}
 
+	/**
+	 * Defines the default value for `async.enabled` option as `false`.
+	 * @return true
+	 */
 	protected boolean getAsyncEnabledDefaultValue() {
 		return false;
+	}
+
+	/**
+	 * Defines the default value for `async.queue` option as 2 megabytes.
+	 * @return 2048
+	 */
+	protected int getAsyncQueueDefaultValue() {
+		return 2048;
 	}
 
 	/**

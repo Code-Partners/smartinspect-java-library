@@ -261,6 +261,15 @@ public class CloudProtocol extends TcpProtocol {
     }
 
     /**
+     * Defines the default value for `async.throttle` option as `false`.
+     * @return false
+     */
+    @Override
+    protected boolean getAsyncThrottleDefaultValue() {
+        return false;
+    }
+
+    /**
      * Defines the default value for `async.queue` option as 20 megabytes.
      * Double the size of the max packet size supported by the cloud. We want async queue to fit the largest packet,
      * as have some spare space.

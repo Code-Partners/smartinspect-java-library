@@ -6,7 +6,7 @@
 
     <groupId>com.code-partners</groupId>
     <artifactId>smartinspect-java-library</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.4-SNAPSHOT</version>
 
     <name>SmartInspect Java Client Library</name>
     <description>

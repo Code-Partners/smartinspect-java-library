@@ -26,7 +26,7 @@ public class LookupTable {
 	private static final int MINUTES_FACTOR = SECONDS_FACTOR * 60;
 	private static final int HOURS_FACTOR = MINUTES_FACTOR * 60;
 	private static final int DAYS_FACTOR = HOURS_FACTOR * 24;
-	private static final int KB_FACTOR = 1024;
+	public static final int KB_FACTOR = 1024;
 	private static final int MB_FACTOR = KB_FACTOR * 1024;
 	private static final int GB_FACTOR = MB_FACTOR * 1024;
 

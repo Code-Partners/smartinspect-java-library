@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 public class Chunk extends Packet {
     public static final Logger logger = Logger.getLogger(Chunk.class.getName());
 
+    // chunk format (short) + packet count (int) + chunk body size in bytes (int)
     public Short headerSize = 2 + 4 + 4;
     public Short chunkFormat = 1;
 

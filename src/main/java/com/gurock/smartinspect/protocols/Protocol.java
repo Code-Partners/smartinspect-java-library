@@ -733,7 +733,7 @@ public abstract class Protocol {
 
 	/**
 	 * Defines the default value for `async.queue` option as 2 megabytes.
-	 * @return 2048
+	 * @return 2048 KB
 	 */
 	protected int getAsyncQueueDefaultValue() {
 		return 2048;

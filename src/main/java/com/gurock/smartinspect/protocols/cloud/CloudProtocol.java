@@ -2,6 +2,7 @@ package com.gurock.smartinspect.protocols.cloud;
 
 import com.gurock.smartinspect.FileRotate;
 import com.gurock.smartinspect.FileRotater;
+import com.gurock.smartinspect.LookupTable;
 import com.gurock.smartinspect.SmartInspectException;
 import com.gurock.smartinspect.connections.ConnectionsBuilder;
 import com.gurock.smartinspect.packets.LogHeader;
@@ -78,7 +79,7 @@ public class CloudProtocol extends TcpProtocol {
      * When exceeded, the packet is partitioned.
      * Chunks must be smaller than this limit.
      */
-     private static int CHUNK_MAX_SIZE = 395 * 1024;
+    private static int CHUNK_MAX_SIZE = 395 * 1024;
 
     private static int MIN_ALLOWED_CHUNK_MAX_AGE = 500;
     private static int DEFAULT_CHUNK_MAX_AGE = 1000;
@@ -273,7 +274,7 @@ public class CloudProtocol extends TcpProtocol {
      * Defines the default value for `async.queue` option as 20 megabytes.
      * Double the size of the max packet size supported by the cloud. We want async queue to fit the largest packet,
      * as have some spare space.
-     * @return 20480
+     * @return 20480 KB
      */
     @Override
     protected int getAsyncQueueDefaultValue() {
@@ -283,7 +284,9 @@ public class CloudProtocol extends TcpProtocol {
     private void loadChunkingOptions() {
         chunkingEnabled = getBooleanOption("chunking.enabled", true);
 
-        chunkMaxSize = getSizeOption("chunking.maxsize", CHUNK_MAX_SIZE);
+        chunkMaxSize = getSizeOption(
+                "chunking.maxsize", CHUNK_MAX_SIZE /  LookupTable.KB_FACTOR
+        );
         if (chunkMaxSize < MIN_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MIN_ALLOWED_CHUNK_MAX_SIZE;
         if (chunkMaxSize > MAX_ALLOWED_CHUNK_MAX_SIZE) chunkMaxSize = MAX_ALLOWED_CHUNK_MAX_SIZE;
 
@@ -292,7 +295,9 @@ public class CloudProtocol extends TcpProtocol {
     }
 
     private void loadVirtualFileRotationOptions() {
-        virtualFileMaxSize = getSizeOption("maxsize", DEFAULT_VIRTUAL_FILE_MAX_SIZE);
+        virtualFileMaxSize = getSizeOption(
+                "maxsize", DEFAULT_VIRTUAL_FILE_MAX_SIZE / LookupTable.KB_FACTOR
+        );
         if (virtualFileMaxSize < MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MIN_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
         if (virtualFileMaxSize > MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE) virtualFileMaxSize = MAX_ALLOWED_VIRTUAL_FILE_MAX_SIZE;
 

@@ -104,6 +104,8 @@ public class CloudProtocol extends TcpProtocol {
     private static int MAX_ALLOWED_CUSTOM_LABEL_COUNT = 5;
     private static int MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH = 100;
 
+    private static final byte[] PREFACE_BYTES = new byte[] { 0x29, 0x17, 0x73, 0x50 };
+
     private FileRotater fRotater;
     private FileRotate fRotate;
 
@@ -528,6 +530,7 @@ public class CloudProtocol extends TcpProtocol {
             }
         }
 
+        logger.info(">>>>>> CHANGE VIRTUAL FILE ID ON ROTATION");
         virtualFileId = UUID.randomUUID();
 
         virtualFileSize = 0;
@@ -642,6 +645,12 @@ public class CloudProtocol extends TcpProtocol {
         } else {
             return super.internalInitializeSocket();
         }
+    }
+
+    @Override
+    protected void internalWritePacket(Packet packet) throws Exception {
+        fOstream.write(PREFACE_BYTES);
+        super.internalWritePacket(packet);
     }
 
     @Override

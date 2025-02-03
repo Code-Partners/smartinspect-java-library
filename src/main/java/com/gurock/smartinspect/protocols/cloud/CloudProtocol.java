@@ -102,6 +102,7 @@ public class CloudProtocol extends TcpProtocol {
     private static int DEFAULT_VIRTUAL_FILE_MAX_SIZE = 1 * 1024 * 1024;
 
     private static int MAX_ALLOWED_CUSTOM_LABEL_COUNT = 5;
+    private static int MIN_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH = 1;
     private static int MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH = 100;
 
     private static final byte[] PREFACE_BYTES = new byte[] { 0x29, 0x17, 0x73, 0x50 };
@@ -371,6 +372,9 @@ public class CloudProtocol extends TcpProtocol {
                 if (
                         (name.length() <= MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
                         && (value.length() <= MAX_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
+
+                        && (name.length() >= MIN_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
+                        && (value.length() >= MIN_ALLOWED_CUSTOM_LABEL_COMPONENT_LENGTH)
                 ) {
                     customLabels.put(name, value);
                 }

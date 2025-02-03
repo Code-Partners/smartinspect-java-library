@@ -5,11 +5,11 @@ import com.gurock.smartinspect.Level;
 import com.gurock.smartinspect.LookupTable;
 import com.gurock.smartinspect.protocols.cloud.CloudProtocol;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CloudProtocolConnectionStringBuilder extends TcpProtocolConnectionStringBuilder {
-    private Map<String, String> fCustomLabels = new HashMap<>();
+    private Map<String, String> fCustomLabels = new LinkedHashMap<>();
 
     @Override
     public ConnectionStringBuilder and() {

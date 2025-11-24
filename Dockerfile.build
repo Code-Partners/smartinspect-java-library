@@ -1,4 +1,4 @@
-FROM openjdk:11.0.4-jdk-slim
+FROM openjdk:11.0.4-jdk
 
 RUN mkdir /.gnupg && chmod 777 /.gnupg
 
